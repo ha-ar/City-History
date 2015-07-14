@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.androidquery.AQuery;
 
-import Model.CityPlacesModel;
+import Model.PlacesModel;
 import Services.CallBack;
-import Services.CityDetailService;
+import Services.PlacesService;
 
 /**
  * Created by waqas on 6/18/15.
@@ -21,16 +21,19 @@ public class PlacesFragment extends BaseFragment {
     AQuery aq;
     private int cityId;
     private BaseClass base;
-    CityDetailService obj;
-    CitysAdapter selectCityAdapter;
-    ListView CityView;
+    PlacesService obj;
+    PlacesAdapter selectCityAdapter;
+    GridView CityView;
     int index;
+
+    static String CategoriesId;
     static String CityId;
-    public static PlacesFragment newInstance(String id) {
+    public static PlacesFragment newInstance(String id,String CategoryId) {
 
         PlacesFragment fragment = new PlacesFragment();
         CityId   = id ;
-        Log.e("City id in places ",CityId);
+        CategoriesId =CategoryId;
+        Log.e("City id in places ",CityId + CategoriesId);
         return fragment;
     }
 
@@ -48,20 +51,16 @@ public class PlacesFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.places_fragment, container, false);
         aq = new AQuery(getActivity(), view);
-
-
-        CityView = (ListView) view.findViewById(R.id.city_details);
+        CityView = (GridView) view.findViewById(R.id.city_details);
+        CityView.setNumColumns(2);
         base = ((BaseClass) getActivity().getApplicationContext());
-
-        obj = new CityDetailService(getActivity().getApplicationContext());
-        obj.CityDetails(CityId,true, new CallBack(this, "CityDetails"));
+        obj = new PlacesService(getActivity().getApplicationContext());
+        obj.CityDetails(CityId,CategoriesId,true, new CallBack(this, "CityDetails"));
         CityView.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount){
-
                 index = page;
                 GetSearchMoreResults(page);
-
             }
         });
         return view;
@@ -77,14 +76,15 @@ public class PlacesFragment extends BaseFragment {
     public void CityDetails(Object caller, Object model) {
         if(index==0)
         {
-            CityPlacesModel.getInstance().setList((CityPlacesModel) model);
-            if (CityPlacesModel.getInstance().previous ==null) {
+            PlacesModel.getInstance().setList((PlacesModel) model);
+            if (PlacesModel.getInstance().previous ==null) {
                 aq.id(R.id.city_details).itemClicked(new CityListner());
-                selectCityAdapter = new CitysAdapter(getActivity());
+                selectCityAdapter = new PlacesAdapter(getActivity());
                 CityView.setAdapter(selectCityAdapter);
             }
         }else{
-            CityPlacesModel.getInstance().appendList((CityPlacesModel) model);
+
+            PlacesModel.getInstance().appendList((PlacesModel) model);
             selectCityAdapter.notifyDataSetChanged();
         }
     }
@@ -103,12 +103,11 @@ public class PlacesFragment extends BaseFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             Log.e("a","aaaaaaa");
-            int cityId = CityPlacesModel.getInstance().results.get(position).id;
+            int cityId = PlacesModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.pagerForList, CityPlacesDetailFragment.newInstance(cityId))
+                    .replace(R.id.pagerForList, PlacesDetailFragment.newInstance(cityId))
                     .addToBackStack(null).commit();
 
-            Log.e("Places for city ", String.valueOf(cityId));
         }
     }
 

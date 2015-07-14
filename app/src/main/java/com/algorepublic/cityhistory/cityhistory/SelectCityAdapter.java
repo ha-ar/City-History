@@ -1,7 +1,6 @@
 package com.algorepublic.cityhistory.cityhistory;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ public class SelectCityAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+
         return SelectCityModel.getInstance().results.size();
     }
 
@@ -42,7 +42,7 @@ public class SelectCityAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        Log.e("Position of city item ",String.valueOf(position));
+
         return position;
     }
 

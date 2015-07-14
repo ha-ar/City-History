@@ -1,13 +1,17 @@
 apply plugin: 'com.android.application'
 
+
+repositories {
+    mavenCentral()
+}
 android {
     compileSdkVersion 21
     buildToolsVersion "21.0.2"
 
     defaultConfig {
         applicationId "com.algorepublic.cityhistory.cityhistory"
-        minSdkVersion 14
-        targetSdkVersion 19
+        minSdkVersion 11
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -22,9 +26,18 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.1.1'
-//    compile 'com.android.support:support-v13:+'
+    //    compile 'com.android.support:support-v13:+'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile files('libs/android-query-full.0.26.7.jar')
     compile 'com.google.code.gson:gson:2.3.1'
+    //    compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-
+    compile 'com.google.android.gms:play-services:4.2.42'
+    compile project(':menudrawer')
+    compile project(':circularImageView')
+    //        compile 'org.lucasr.twowayview:twowayview:0.1.4'
+    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile project(':core')
+    compile project(':layouts')
 }

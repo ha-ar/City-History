@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
+import net.simonvt.menudrawer.MenuDrawer;
+
 import java.util.ArrayList;
 
 import Model.SelectCityModel;
@@ -22,22 +24,28 @@ import Services.SelectCityService;
 public class BaseActivity extends FragmentActivity {
     private AQuery aq;
     private BaseClass base;
-    static int p;
+    static int p=1;
     ArrayList<String> results;
     private SelectCityService obj;
-    private ArrayList<SelectCityModel> arrayList = new ArrayList<>();
-    ListView CityListView;
+    MenuDrawer mDrawerLeft;
+
+  public static    ListView CityListView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       setContentView(R.layout.activity_main);
         CityListView = (ListView) findViewById(R.id.city_list);
+//        mDrawerLeft = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_CONTENT);
+//        mDrawerLeft.setContentView(R.layout.activity_main);
+//        mDrawerLeft.setMenuView(R.layout.layout_dropdownmenu);
+//        mDrawerLeft.setDrawOverlay(true);
+//        mDrawerLeft.setSlideDrawable(R.drawable.menu);
+//        mDrawerLeft.setDrawerIndicatorEnabled(true);
+//        mDrawerLeft.setAllowIndicatorAnimation(true);
         aq = new AQuery(BaseActivity.this);
         base = ((BaseClass)getApplicationContext());
-
-
         obj = new SelectCityService(BaseActivity.this);
         obj.SelectCity(true, new CallBack(this, "UpDateList"));
 
@@ -52,8 +60,7 @@ public class BaseActivity extends FragmentActivity {
         if (SelectCityModel.getInstance().count!= "0") {
             aq.id(R.id.city_list).itemClicked(new SelectCityListner());
             SelectCityAdapter selectCityAdapter=  new SelectCityAdapter(getApplicationContext());
-
-          CityListView.setAdapter(selectCityAdapter);
+            CityListView.setAdapter(selectCityAdapter);
         }else{
             Toast.makeText(getApplicationContext(), "No City Found",
                     Toast.LENGTH_LONG).show();
@@ -68,11 +75,11 @@ public class BaseActivity extends FragmentActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String cityId = SelectCityModel.getInstance().results.get(position).id;
             Log.e("CITYID",String.valueOf(cityId));
-           getSupportFragmentManager().beginTransaction()
-                   .replace(R.id.container, PagerFragment.newInstance(cityId, false))
-                   .addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, PagerFragment.newInstance(cityId, false))
+                    .addToBackStack(null).commit();
         }
-        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

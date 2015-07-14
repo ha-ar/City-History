@@ -25,6 +25,7 @@ public class PagerFragment extends Fragment {
     static PagerAdapter pagerAdapter;
     private static final String POSITION = "position";
     static String cityId;
+    static String CategoriesId;
     private int currentColor = 0xFF666666;
     private final Handler handler = new Handler();
     private PagerSlidingTabStrip tabs;
@@ -34,18 +35,13 @@ public class PagerFragment extends Fragment {
         PagerFragment fragment = new PagerFragment();
         cityId = cityid;
         Bundle args = new Bundle();
-
-
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class PagerFragment extends Fragment {
 
     public class PagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Places","Personality","Blogs","Events"};
+        private final String[] TITLES = {"Places","Events","People","Blogs"};
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
@@ -89,13 +85,17 @@ public class PagerFragment extends Fragment {
             switch (position)
             {
                 case 0:
-                    return PlacesFragment.newInstance(cityId);
+                    CategoriesId="1";
+                    return PlacesFragment.newInstance(cityId,CategoriesId);
                 case 1:
-                    return PersonalityFragment.newInstance(cityId);
+                    CategoriesId="2";
+                    return EventsFragment.newInstance(cityId,CategoriesId);
                 case 2:
-                    return BlogsFragment.newInstance(cityId);
+                    CategoriesId="3";
+                    return PeopleFragment.newInstance(cityId,CategoriesId);
                 case 3:
-                    return EventsFragment.newInstance(cityId);
+                    CategoriesId="4";
+                    return BlogsFragment.newInstance(cityId,CategoriesId);
             }
             return null;
         }
