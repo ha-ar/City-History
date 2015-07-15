@@ -25,7 +25,7 @@ public class SelectCityModel {
 
 
 
-    public String count;
+    public int count;
     public String next;
     public String previous;
 

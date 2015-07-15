@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
@@ -24,12 +24,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.TwoWayView;
-
-import java.util.ArrayList;
 
 import Model.PlacesDetailModel;
 import Services.CallBack;
@@ -52,7 +50,6 @@ public class PlacesDetailFragment extends BaseFragment {
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
     private static final String ARG_LAYOUT_ID = "layout_id";
-
     private TwoWayView mRecyclerView;
 
     int Position=0;
@@ -96,7 +93,15 @@ public class PlacesDetailFragment extends BaseFragment {
         added_by = (TextView) view.findViewById(R.id.added_by);
         obj = new PlacesDetailService(getActivity().getApplicationContext());
         obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
+        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
 
+        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View child, int position, long id) {
+                pager.setCurrentItem(position);
+                aq.id(R.id.disc).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
+            }
+        });
         return view;
     }
 
@@ -167,16 +172,18 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == ((LinearLayout) object);
+            return view == object;
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Position = position;
             View itemView = mLayoutInflater.inflate(R.layout.places_pager_item, container, false);
+            ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             imageView = (ImageView) itemView.findViewById(R.id.imageView_people);
 
-            ImageLoader.getInstance().displayImage(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, imageView);
+            aq.id(imageView).progress(progressBar).image(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, true, true);
+//            ImageLoader.getInstance().displayImage(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, imageView);
             Log.e("positon",position + "");
             aq.id(R.id.disc).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
 
@@ -187,7 +194,7 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+//            container.removeView((RelativeLayout)object);
         }
 //        public void loadImage()
 //        {
@@ -205,23 +212,25 @@ public class PlacesDetailFragment extends BaseFragment {
 
 
         private final Context mContext;
-        ArrayList<ItemDetails> itemDetailses = new ArrayList<>();
+//        ArrayList<ItemDetails> itemDetailses = new ArrayList<>();
         AQuery aqAdapter;
 
         public class SimpleViewHolder extends RecyclerView.ViewHolder {
+            ImageView  imageView;
             public SimpleViewHolder(View view) {
                 super(view);
+         imageView = (ImageView) view.findViewById(R.id.photo_image);
             }
         }
 
         public LayoutAdapter(Context context, TwoWayView recyclerView) {
 
-            for(int loop=0;loop< PlacesDetailModel.getInstance().album.photos_set.size();loop++) {
-                ItemDetails itemDetails = new ItemDetails();
-                itemDetails.setTitle(PlacesDetailModel.getInstance().album.photos_set.get(loop).get_photo);
-                itemDetailses.add(itemDetails);
-
-            }
+//            for(int loop=0;loop< PlacesDetailModel.getInstance().album.photos_set.size();loop++) {
+//                ItemDetails itemDetails = new ItemDetails();
+//                itemDetails.setTitle(PlacesDetailModel.getInstance().album.photos_set.get(loop).get_photo);
+//                itemDetailses.add(itemDetails);
+//
+//            }
             mContext = context;
             mRecyclerView = recyclerView;
         }
@@ -230,26 +239,21 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.item_gallery, parent, false);
+            final View view = LayoutInflater.from(mContext).inflate(R.layout.item_gallery, parent, false);
             aqAdapter = new AQuery(view);
             return new SimpleViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            Position = position;
-            aqAdapter.id(R.id.photo_image).image(itemDetailses.get(position).getTitle());
-            aqAdapter.id(R.id.photo_image).clicked(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                 mCustomPagerAdapter.notifyDataSetChanged();
-                }
-            });
+
+//            holder.imageView.setImage(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo, true, true);
+            aqAdapter.id(holder.imageView).image(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo,true,true);
         }
 
         @Override
         public int getItemCount() {
-            return itemDetailses.size();
+            return PlacesDetailModel.getInstance().album.photos_set.size();
         }
     }
 
