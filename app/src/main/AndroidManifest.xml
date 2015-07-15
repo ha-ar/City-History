@@ -7,12 +7,25 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="com.algorepublic.cityhistory.cityhistory.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <permission
+        android:name="com.algorepublic.cityhistory.cityhistory.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name=".BaseClass"
         android:theme="@style/AppTheme" >
+        <!-- Goolge Maps API Key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyB9AO6W6SSLylUsQiMq8suzcZY7OZgf7SI"/>
+            <!--android:value="AIzaSyBo8ODJmHlGhPq1U-URcDQyMO6AOd74n3Y" />-->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <uses-library android:name="com.google.android.maps" android:required="true" />
         <activity
             android:name=".BaseActivity"
             android:label="@string/app_name" >
@@ -24,10 +37,7 @@
         </activity>
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <!-- Goolge Maps API Key -->
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBo8ODJmHlGhPq1U-URcDQyMO6AOd74n3Y" />
+
     </application>
 
 </manifest>
