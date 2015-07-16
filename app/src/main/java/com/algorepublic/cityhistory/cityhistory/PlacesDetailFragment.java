@@ -2,9 +2,9 @@ package com.algorepublic.cityhistory.cityhistory;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -76,8 +76,8 @@ public class PlacesDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.places_detail_fragment, container, false);
         aq = new AQuery(getActivity(), view);
         base = ((BaseClass) getActivity().getApplicationContext());
-        mapView = (MapView) view.findViewById(R.id.mapView);
-        googleMap = mapView.getMap();
+//        mapView = (MapView) view.findViewById(R.id.mapView);
+//        googleMap = mapView.getMap();
         pager = (ViewPager) view.findViewById(R.id.pager);
         mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
@@ -102,22 +102,25 @@ public class PlacesDetailFragment extends BaseFragment {
                 aq.id(R.id.disc).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
             }
         });
+        createMapView();
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        createMapView();
-    }
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//    }
 
     private void createMapView(){
 
         try {
             if(googleMap == null){
-                FragmentManager fm=getActivity().getSupportFragmentManager();
-                SupportMapFragment smf = (SupportMapFragment) fm.findFragmentById(R.id.mapView);
-                googleMap=smf.getMap();
+                if (Build.VERSION.SDK_INT < 21) {
+                    googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mapView)).getMap();
+                } else {
+                    googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView)).getMap();
+                }
             }
         } catch (NullPointerException exception){
             Log.e("mapApp", exception.toString());
