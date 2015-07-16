@@ -89,7 +89,7 @@ public class PlacesFragment extends BaseFragment {
         }
     }
     public void GetSearchMoreResults(int page){
-        obj.CityDetailPage(true,page, new CallBack(this, "CityDetails"));
+        obj.CityDetailPage(true, page, new CallBack(PlacesFragment.this, "CityDetails"));
 
     }
 

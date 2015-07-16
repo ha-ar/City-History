@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
@@ -29,13 +28,13 @@ public class BaseActivity extends FragmentActivity {
     private SelectCityService obj;
     MenuDrawer mDrawerLeft;
 
-  public static    ListView CityListView;
+    public static    ListView CityListView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         CityListView = (ListView) findViewById(R.id.city_list);
 //        mDrawerLeft = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_CONTENT);
 //        mDrawerLeft.setContentView(R.layout.activity_main);
@@ -47,25 +46,18 @@ public class BaseActivity extends FragmentActivity {
         aq = new AQuery(BaseActivity.this);
         base = ((BaseClass)getApplicationContext());
         obj = new SelectCityService(BaseActivity.this);
-        obj.SelectCity(true, new CallBack(this, "UpDateList"));
+//        if(SelectCityModel.getInstance().)
+        if (SelectCityModel.getInstance().count == 0)
+            obj.SelectCity(true, new CallBack(this, "UpDateList"));
 
     }
 
 
     public void UpDateList(Object caller, Object model) {
-
-
         SelectCityModel.getInstance().setList((SelectCityModel) model);
-
-        if (SelectCityModel.getInstance().count!= "0") {
-            aq.id(R.id.city_list).itemClicked(new SelectCityListner());
-            SelectCityAdapter selectCityAdapter=  new SelectCityAdapter(getApplicationContext());
-            CityListView.setAdapter(selectCityAdapter);
-        }else{
-            Toast.makeText(getApplicationContext(), "No City Found",
-                    Toast.LENGTH_LONG).show();
-
-        }
+        aq.id(R.id.city_list).itemClicked(new SelectCityListner());
+        SelectCityAdapter selectCityAdapter=  new SelectCityAdapter(getApplicationContext());
+        CityListView.setAdapter(selectCityAdapter);
 
     }
 
