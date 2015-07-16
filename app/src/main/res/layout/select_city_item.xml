@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:textAlignment="center"
-        android:text="adakdadakdkadkakd"
+
         android:textColor="@android:color/black"
         />
 

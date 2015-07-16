@@ -60,9 +60,12 @@ public class SelectCityAdapter extends BaseAdapter {
         holder = new ViewHolder();
 
         holder.city_Name = (TextView) v.findViewById(R.id.city_name);
-
         v.setTag(holder);
+//        holder.city_Name.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
+//        String upperString = myString.substring(0,1).toUpperCase() + myString.substring(1);
         holder.city_Name.setText(getItem(position).name);
+
         return v;
     }
 
