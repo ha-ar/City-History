@@ -1,6 +1,5 @@
 package com.algorepublic.cityhistory.cityhistory;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,7 +71,7 @@ public class PlacesDetailFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        final Activity activity = getActivity();
+
         View view = inflater.inflate(R.layout.places_detail_fragment, container, false);
         aq = new AQuery(getActivity(), view);
         base = ((BaseClass) getActivity().getApplicationContext());

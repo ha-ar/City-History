@@ -26,9 +26,10 @@ public class PagerFragment extends Fragment {
     private static final String POSITION = "position";
     static String cityId;
     static String CategoriesId;
-    private int currentColor = 0xFF666666;
+    private int currentColor = 0xFFCC33;
     private final Handler handler = new Handler();
     private PagerSlidingTabStrip tabs;
+
 
     private Drawable oldBackground = null;
     public static PagerFragment newInstance(String cityid, boolean comingFromSaved) {
@@ -52,7 +53,9 @@ public class PagerFragment extends Fragment {
         pager.setAdapter(pagerAdapter);
         tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         tabs.setViewPager(pager);
-//        changeColor(currentColor);
+        tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
+        tabs.setTextColor(getResources().getColor(R.color.Black));
+
 
          return view;
     }
