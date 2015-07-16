@@ -16,7 +16,7 @@
         android:protectionLevel="signature" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:name=".BaseClass"
         android:theme="@style/AppTheme" >
@@ -31,6 +31,11 @@
         <activity
             android:name=".BaseActivity"
             android:label="@string/app_name" >
+
+        </activity>
+
+        <activity android:name=".SpalshScreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
