@@ -32,7 +32,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
     //    compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-    compile 'com.google.android.gms:play-services:4.2.42'
+    compile 'com.google.android.gms:play-services:+'
     compile project(':menudrawer')
     compile project(':circularImageView')
     //        compile 'org.lucasr.twowayview:twowayview:0.1.4'
