@@ -41,7 +41,7 @@ public class PlacesAdapter extends BaseAdapter {
         aqAdapter = new AQuery(v);
         holder = new ViewHolder();
 
-        holder.city_Name = (TextView) v.findViewById(R.id.title);
+        holder.city_Name = (TextView) v.findViewById(R.id.title_places);
 //        holder.Star = (ImageView) v.findViewById(R.id.star);
 
         v.setTag(holder);

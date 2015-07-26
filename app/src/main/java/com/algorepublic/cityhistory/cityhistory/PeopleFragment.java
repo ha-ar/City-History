@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.androidquery.AQuery;
 
@@ -24,7 +24,7 @@ public class PeopleFragment extends BaseFragment {
     static String CityId;
     private BaseClass base;
     AQuery aq;
-    ListView PeopleView;
+    GridView PeopleView;
     int index;
     PeoplesAdapter selectPeopleAdapter;
     PeoplesService obj;
@@ -47,7 +47,8 @@ public class PeopleFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.people_fragment, container, false);
         aq = new AQuery(getActivity(), view);
-        PeopleView =(ListView)view.findViewById(R.id.peoples);
+        PeopleView =(GridView)view.findViewById(R.id.peoples);
+        PeopleView.setNumColumns(2);
         obj = new PeoplesService(getActivity().getApplicationContext());
         obj.PeoplesDetails(CityId,CategoriesId,true, new CallBack(this, "PeoplesDetails"));
 
@@ -83,7 +84,7 @@ public class PeopleFragment extends BaseFragment {
         }
     }
     public void GetResults(int page){
-        obj.PeoplesDetailPage(true, page, new CallBack(this, "EventsDetails"));
+        obj.PeoplesDetailPage(CityId,CategoriesId,true, page, new CallBack(this, "PeoplesDetails"));
 
     }
 

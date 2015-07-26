@@ -14,7 +14,7 @@
         android:layout_above="@+id/imgLogo"
         android:layout_centerHorizontal="true"
         android:src="@drawable/star_splash"
-
+          android:paddingLeft="2dp"
 
         />
     <ImageView

@@ -1,11 +1,12 @@
 package com.algorepublic.cityhistory.cityhistory;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.androidquery.AQuery;
 
@@ -22,7 +23,7 @@ public class BlogsFragment extends BaseFragment {
     static String CityId;
     private BaseClass base;
     AQuery aq;
-    ListView BlogView;
+    GridView BlogView;
     int index;
     BlogsAdapter selectEventsAdapter;
     BlogService obj;
@@ -31,6 +32,7 @@ public class BlogsFragment extends BaseFragment {
         BlogsFragment fragment = new BlogsFragment();
         CityId=id;
         CategoriesId=CategoryId;
+        Log.e("City id in blogs ", CityId + CategoriesId);
         return fragment;
     }
     @Override
@@ -45,7 +47,8 @@ public class BlogsFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.blogs_fragment, container, false);
         aq = new AQuery(getActivity(), view);
-        BlogView = (ListView) view.findViewById(R.id.blogs);
+        BlogView = (GridView) view.findViewById(R.id.blogs);
+        BlogView.setNumColumns(2);
         base = ((BaseClass) getActivity().getApplicationContext());
         obj = new BlogService(getActivity().getApplicationContext());
         obj.BlogsDetails(CityId,CategoriesId,true, new CallBack(this, "BlogsDetails"));
@@ -82,7 +85,7 @@ public class BlogsFragment extends BaseFragment {
         }
     }
     public void GetResults(int page){
-        obj.BlogsDetailPage(true, page, new CallBack(this, "EventsDetails"));
+        obj.BlogsDetailPage(CityId,CategoriesId,true, page, new CallBack(this, "BlogsDetails"));
 
     }
 

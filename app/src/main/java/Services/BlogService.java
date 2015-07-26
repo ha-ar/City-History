@@ -1,6 +1,6 @@
 package Services;
 import android.content.Context;
-import android.util.Log;
+
 import Model.BlogsModel;
 
 /**
@@ -15,13 +15,11 @@ public class BlogService  extends BaseService {
 
     public void BlogsDetails(String CityId,String CategoriedId,boolean message, CallBack obj){
         String url = Constants.BASE_URL + "site/" + CityId + "/type/"+CategoriedId+"/articles-list/?format=json";
-        Log.e("Placesurl", url);
         this.get(url, obj, BlogsModel.getInstance(), message);
     }
-    public void BlogsDetailPage(boolean message,int pageNo,CallBack obj){
+    public void BlogsDetailPage(String CityId, String CategoriedId,boolean message,int pageNo,CallBack obj){
 
-        String url = Constants.CITY_DETAIL_PAGE+"page="+pageNo+"&format=json";
-
+        String url = Constants.BASE_URL+"site/"+CityId+"/type/"+CategoriedId+"/articles-list/?"+"page="+pageNo+"&format=json";
         this.get(url, obj, BlogsModel.getInstance(), message);
 
     }

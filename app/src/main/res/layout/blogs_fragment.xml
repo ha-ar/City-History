@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="2.5dp"
+    android:paddingBottom="2.5dp"
+    android:paddingRight="2.5dp"
+    android:paddingTop="2.5dp"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/blogs"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="15dp"
-        />
+        android:id="@+id/layout_grid"
+        android:layout_below="@+id/total_results"
+        android:layout_above="@+id/footer"
+        android:layout_height="wrap_content">
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/blogs"
+            android:horizontalSpacing="0dp"
+            android:verticalSpacing="0dp"
+            android:stretchMode="columnWidth"
+            android:rowCount="2"
+            android:scrollbarSize="0dp"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </LinearLayout>

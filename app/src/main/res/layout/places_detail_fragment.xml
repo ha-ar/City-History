@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:scrollbarSize="2dp"
     >
     <RelativeLayout
         android:background="@android:color/white"
@@ -34,7 +35,7 @@
 
             <TextView
 
-                android:id="@+id/title"
+                android:id="@+id/head_places"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:textSize="25sp"
@@ -44,10 +45,11 @@
                 android:textStyle="bold"
                 android:layout_weight="1"/>
             <TextView
-                android:id="@+id/disc"
+                android:id="@+id/disc_places"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
+                android:gravity="center"
                 android:layout_margin="5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
@@ -94,7 +96,7 @@
             android:layout_below="@+id/location"
             android:layout_marginTop="5dp">
             <fragment
-                android:id="@+id/mapView"
+                android:id="@+id/places_mapView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:name="com.google.android.gms.maps.SupportMapFragment"/>
@@ -118,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/type"
+                android:id="@+id/type_places"
                 android:textSize="16sp"/>
         </LinearLayout>
         <View
@@ -150,7 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/added"
+                android:id="@+id/added_places"
                 android:textSize="16sp"/>
         </LinearLayout>
         <View
@@ -182,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/added_by"
+                android:id="@+id/added_by_places"
                 android:textSize="16sp"/>
         </LinearLayout>
         <View

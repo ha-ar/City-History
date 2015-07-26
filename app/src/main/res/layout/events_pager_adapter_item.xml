@@ -1,0 +1,82 @@
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:orientation="vertical" android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:background="@drawable/bottom">-->
+    <!--<View-->
+        <!--android:layout_width="5dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--/>-->
+    <!--<ImageView-->
+        <!--android:id="@+id/logo_event"-->
+        <!--android:layout_width="75dp"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:layout_margin="25dp"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/title_event"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+
+        <!--android:layout_toRightOf="@id/logo_event"-->
+        <!--android:layout_toLeftOf="@+id/star_event"-->
+        <!--android:textSize="14sp"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:textStyle="normal"/>-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/star_event"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:background="@drawable/play"-->
+        <!--android:clickable="true"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"/>-->
+
+
+
+<!--</RelativeLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2.5dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
+        <ImageView
+            android:id="@+id/logo_event"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true" />
+
+
+
+        <TextView
+            android:id="@+id/title_event"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#BB000000"
+            android:textColor="@android:color/white"
+            android:singleLine="true"
+            android:text="hjfhhyj"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:layout_alignBottom="@+id/logo_event"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

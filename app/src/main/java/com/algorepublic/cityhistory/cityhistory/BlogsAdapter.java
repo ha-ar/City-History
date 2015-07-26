@@ -34,15 +34,15 @@ public class BlogsAdapter extends BaseAdapter {
         ViewHolder holder;
         LayoutInflater mInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = mInflater.inflate(R.layout.blog_pager_item, null);
+        v = mInflater.inflate(R.layout.blog_pager_adapter_item, null);
         aqAdapter = new AQuery(v);
         holder = new ViewHolder();
         holder.city_Name = (TextView) v.findViewById(R.id.title_blog);
-        holder.Star = (ImageView) v.findViewById(R.id.star_blog);
+//        holder.Star = (ImageView) v.findViewById(R.id.star_blog);
 
         v.setTag(holder);
         holder.city_Name.setText(BlogsModel.getInstance().results.get(position).title);
-        aqAdapter.id(R.id.star_blog).clicked(new View.OnClickListener() {
+        aqAdapter.id(R.id.logo_blog).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int cityId = BlogsModel.getInstance().results.get(position).id;

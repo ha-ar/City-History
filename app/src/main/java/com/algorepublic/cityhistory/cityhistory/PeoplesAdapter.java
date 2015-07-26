@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 
-import Model.EventsModel;
 import Model.PeoplesModel;
 
 /**
@@ -35,15 +34,15 @@ public class PeoplesAdapter extends BaseAdapter {
         ViewHolder holder;
         LayoutInflater mInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = mInflater.inflate(R.layout.peoples_pager_item, null);
+        v = mInflater.inflate(R.layout.people_pager_adapter_item, null);
         aqAdapter = new AQuery(v);
         holder = new ViewHolder();
-        holder.city_Name = (TextView) v.findViewById(R.id.title_people);
-        holder.Star = (ImageView) v.findViewById(R.id.star_people);
+        holder.people_Name = (TextView) v.findViewById(R.id.people_title);
+//        holder.Star = (ImageView) v.findViewById(R.id.star_people);
 
         v.setTag(holder);
-        holder.city_Name.setText(PeoplesModel.getInstance().results.get(position).title);
-        aqAdapter.id(R.id.star_people).clicked(new View.OnClickListener() {
+        holder.people_Name.setText(PeoplesModel.getInstance().results.get(position).title);
+        aqAdapter.id(R.id.logo_people).clicked(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int cityId = PeoplesModel.getInstance().results.get(position).id;
@@ -53,23 +52,23 @@ public class PeoplesAdapter extends BaseAdapter {
                         .addToBackStack(null).commit();
             }
         });
-        aqAdapter.id(R.id.logo_people).image(EventsModel.getInstance().results.get(position).get_photo,true, true, 0, 0, null, AQuery.FADE_IN_NETWORK, 1.0f);
+        aqAdapter.id(R.id.logo_people).image(PeoplesModel.getInstance().results.get(position).get_photo,true, true, 0, 0, null, AQuery.FADE_IN_NETWORK, 1.0f);
         return v;
     }
 
     static class ViewHolder {
-        TextView city_Name;
+        TextView people_Name;
         ImageView Star;
     }
 
     @Override
     public int getCount() {
-        return EventsModel.getInstance().results.size();
+        return PeoplesModel.getInstance().results.size();
     }
 
     @Override
-    public EventsModel.results getItem(int position) {
-        return EventsModel.getInstance().results.get(position);
+    public PeoplesModel.results getItem(int position) {
+        return PeoplesModel.getInstance().results.get(position);
     }
 
     @Override

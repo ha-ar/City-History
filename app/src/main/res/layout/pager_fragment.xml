@@ -4,16 +4,23 @@
     android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MergeRootFrame">
+    tools:ignore="MergeRootFrame" >
 
 
+    <include
+        android:id="@+id/toolbar_actionbar"
+        layout="@layout/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
 
-        <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="48dip"
 
-           />
+    <com.astuetz.PagerSlidingTabStrip
+        android:layout_below="@+id/toolbar_actionbar"
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="35dip"
+
+        />
 
 
     <android.support.v4.view.ViewPager
@@ -22,4 +29,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    </RelativeLayout>
+</RelativeLayout>

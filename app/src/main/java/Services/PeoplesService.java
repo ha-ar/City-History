@@ -1,7 +1,6 @@
 package Services;
 
 import android.content.Context;
-import android.util.Log;
 
 import Model.PeoplesModel;
 
@@ -17,16 +16,12 @@ public class PeoplesService extends BaseService {
 
     public void PeoplesDetails(String CityId,String CategoriedId,boolean message, CallBack obj){
         String url = Constants.BASE_URL + "site/" + CityId + "/type/"+CategoriedId+"/articles-list/?format=json";
-        Log.e("Placesurl", url);
         this.get(url, obj, PeoplesModel.getInstance(), message);
     }
-    public void PeoplesDetailPage(boolean message,int pageNo,CallBack obj){
+    public void PeoplesDetailPage(String CityId, String CategoriedId,boolean message,int pageNo,CallBack obj){
 
-        String url = Constants.CITY_DETAIL_PAGE+"page="+pageNo+"&format=json";
-
-        this.get(url, obj, PeoplesModel.getInstance(), message);
+        String url = Constants.BASE_URL+"site/"+CityId+"/type/"+CategoriedId+"/articles-list/?"+"page="+pageNo+"&format=json";
+       this.get(url, obj, PeoplesModel.getInstance(), message);
 
     }
-
-
 }

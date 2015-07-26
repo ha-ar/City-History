@@ -12,8 +12,7 @@ import android.widget.ListView;
 import com.androidquery.AQuery;
 
 import net.simonvt.menudrawer.MenuDrawer;
-
-import java.util.ArrayList;
+import net.simonvt.menudrawer.Position;
 
 import Model.SelectCityModel;
 import Services.CallBack;
@@ -24,35 +23,26 @@ public class BaseActivity extends FragmentActivity {
     private AQuery aq;
     private BaseClass base;
     static int p=1;
-    ArrayList<String> results;
     private SelectCityService obj;
     MenuDrawer mDrawerLeft;
-
     public static    ListView CityListView;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        CityListView = (ListView) findViewById(R.id.city_list);
-//        mDrawerLeft = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_CONTENT);
-//        mDrawerLeft.setContentView(R.layout.activity_main);
-//        mDrawerLeft.setMenuView(R.layout.layout_dropdownmenu);
-//        mDrawerLeft.setDrawOverlay(true);
-//        mDrawerLeft.setSlideDrawable(R.drawable.menu);
-//        mDrawerLeft.setDrawerIndicatorEnabled(true);
-//        mDrawerLeft.setAllowIndicatorAnimation(true);
+        mDrawerLeft = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_CONTENT);
+        mDrawerLeft.setContentView(R.layout.activity_main);
+        mDrawerLeft.setMenuView(R.layout.layout_dropdownmenu);
+        mDrawerLeft.setDrawOverlay(true);
+        mDrawerLeft.setSlideDrawable(R.drawable.menu);
+        mDrawerLeft.setDrawerIndicatorEnabled(true);
+        mDrawerLeft.setAllowIndicatorAnimation(true);
         aq = new AQuery(BaseActivity.this);
         base = ((BaseClass)getApplicationContext());
         obj = new SelectCityService(BaseActivity.this);
-//        if(SelectCityModel.getInstance().)
         if (SelectCityModel.getInstance().count == 0)
             obj.SelectCity(true, new CallBack(this, "UpDateList"));
-
+        CityListView = (ListView) findViewById(R.id.city_list);
     }
-
-
     public void UpDateList(Object caller, Object model) {
         SelectCityModel.getInstance().setList((SelectCityModel) model);
         aq.id(R.id.city_list).itemClicked(new SelectCityListner());

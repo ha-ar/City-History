@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.androidquery.AQuery;
 
@@ -21,7 +21,7 @@ public class EventsFragment extends BaseFragment {
     static String CityId;
     private BaseClass base;
     AQuery aq;
-    ListView EventView;
+    GridView EventView;
     int index;
     EventsAdapter selectEventsAdapter;
     EventsService obj;
@@ -43,7 +43,9 @@ public class EventsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.events_fragment, container, false);
         aq = new AQuery(getActivity(), view);
-        EventView =(ListView)view.findViewById(R.id.events);
+        EventView = (GridView) view.findViewById(R.id.events);
+        EventView.setNumColumns(2);
+
         obj = new EventsService(getActivity().getApplicationContext());
         obj.EventsDetails(CityId,CategoriesId,true, new CallBack(this, "EventsDetails"));
         EventView.setOnScrollListener(new EndlessScrollListener() {
@@ -80,7 +82,7 @@ public class EventsFragment extends BaseFragment {
         }
     }
     public void GetResults(int page){
-        obj.EventDetailPage(true, page, new CallBack(this, "EventsDetails"));
+        obj.EventDetailPage(CityId,CategoriesId,true, page, new CallBack(this, "EventsDetails"));
 
     }
 

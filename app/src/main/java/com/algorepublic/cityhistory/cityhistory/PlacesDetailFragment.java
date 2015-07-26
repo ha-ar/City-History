@@ -12,17 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
-import com.androidquery.util.Constants;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
@@ -42,13 +44,10 @@ public class PlacesDetailFragment extends BaseFragment {
     ViewPager pager;
     CustomPagerAdapter mCustomPagerAdapter;
     PlacesDetailService obj;
-    Button map;
     static int PlaceId;
     GoogleMap googleMap;
     MapView mapView;
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
-    private static final String ARG_LAYOUT_ID = "layout_id";
+    static String coordinates;
     private TwoWayView mRecyclerView;
 
     int Position=0;
@@ -66,7 +65,22 @@ public class PlacesDetailFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
+        createMapView();
+        obj = new PlacesDetailService(getActivity().getApplicationContext());
+        obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
+        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View child, int position, long id) {
+                pager.setCurrentItem(position);
+                aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
+            }
+        });
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,55 +89,39 @@ public class PlacesDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.places_detail_fragment, container, false);
         aq = new AQuery(getActivity(), view);
         base = ((BaseClass) getActivity().getApplicationContext());
-//        mapView = (MapView) view.findViewById(R.id.mapView);
-//        googleMap = mapView.getMap();
         pager = (ViewPager) view.findViewById(R.id.pager);
         mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
-        title = (TextView) view.findViewById(R.id.title);
+        title = (TextView) view.findViewById(R.id.head_places);
         mRecyclerView = (TwoWayView) view.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLongClickable(true);
         mRecyclerView.setOrientation(TwoWayLayoutManager.Orientation.HORIZONTAL);
-        map = (Button) view.findViewById(R.id.button1);
-        disc = (TextView) view.findViewById(R.id.disc);
-        type = (TextView) view.findViewById(R.id.type);
-        added = (TextView) view.findViewById(R.id.added);
-        added_by = (TextView) view.findViewById(R.id.added_by);
-        obj = new PlacesDetailService(getActivity().getApplicationContext());
-        obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
-        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
-
-        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View child, int position, long id) {
-                pager.setCurrentItem(position);
-                aq.id(R.id.disc).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
-            }
-        });
-        createMapView();
+        disc = (TextView) view.findViewById(R.id.disc_places);
+        type = (TextView) view.findViewById(R.id.type_places);
+        added = (TextView) view.findViewById(R.id.added_places);
+        added_by = (TextView) view.findViewById(R.id.added_by_places);
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//    }
 
     private void createMapView(){
 
         try {
             if(googleMap == null){
-                if (Build.VERSION.SDK_INT < 21) {
-                    googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mapView)).getMap();
+
+                if (Build.VERSION.SDK_INT < 16) {
+                    googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.places_mapView)).getMap();
+
                 } else {
-                    googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView)).getMap();
+                    googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.places_mapView)).getMap();
+
                 }
             }
         } catch (NullPointerException exception){
             Log.e("mapApp", exception.toString());
         }
+
     }
 
     public void CityPlacesDetails(Object caller, Object model) {
@@ -136,18 +134,40 @@ public class PlacesDetailFragment extends BaseFragment {
     }
 
     private void upDateData(){
-        aq.id(R.id.title).text(PlacesDetailModel.getInstance().title);
-        aq.id(R.id.type).text(PlacesDetailModel.getInstance().type.type);
-        aq.id(R.id.added).text(PlacesDetailModel.getInstance().album.added);
-        aq.id(R.id.added_by).text(PlacesDetailModel.getInstance().user.username);
+        aq.id(R.id.head_places).text(PlacesDetailModel.getInstance().title);
+        aq.id(R.id.type_places).text(PlacesDetailModel.getInstance().type.type);
+        aq.id(R.id.added_places).text(PlacesDetailModel.getInstance().added);
+        aq.id(R.id.added_by_places).text(PlacesDetailModel.getInstance().user.username);
+        LatLong();
     }
 
+    private void LatLong(){
+        coordinates=PlacesDetailModel.getInstance().address;
+        String [] splited = coordinates.split("\\s+");
+        String Lat = splited[0];
+        String Lng =  splited [1];
+        addMarker(Double.valueOf(Lat), Double.valueOf(Lng), PlacesDetailModel.getInstance().title);
 
+    }
+    private void addMarker(double Lat,double Lon,String Title) {
 
+        if(googleMap !=null) {
+            Log.e("awww", "cac");
+            googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Lat, Lon))
+                            .title(Title)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            .draggable(true)
+            );
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(
+                    new LatLng(Double.valueOf(Lat), Double.valueOf(Lon))).zoom(16).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+
+    }
     class CustomPagerAdapter extends PagerAdapter {
 
         Context mContext;
-
         ImageView imageView;
         LayoutInflater mLayoutInflater;
 
@@ -160,14 +180,13 @@ public class PlacesDetailFragment extends BaseFragment {
         public CustomPagerAdapter() {
             super();
         }
-
         @Override
         public int getCount() {
 
             try {
                 return PlacesDetailModel.getInstance().album.photos_set.size();
             }catch (NullPointerException e){
-                aq.id(R.id.pager).visibility(Constants.GONE);
+
                 return 0;
             }
         }
@@ -185,24 +204,15 @@ public class PlacesDetailFragment extends BaseFragment {
             imageView = (ImageView) itemView.findViewById(R.id.imageView_people);
 
             aq.id(imageView).progress(progressBar).image(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, true, true);
-//            ImageLoader.getInstance().displayImage(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, imageView);
-            Log.e("positon",position + "");
-            aq.id(R.id.disc).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
-
-
+            aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
             container.addView(itemView);
             return itemView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-//            container.removeView((RelativeLayout)object);
+
         }
-//        public void loadImage()
-//        {
-//            ImageLoader.getInstance().displayImage(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, imageView);
-//
-//        }
     }
 
     private class GalleryPagerAdapter {
@@ -214,25 +224,19 @@ public class PlacesDetailFragment extends BaseFragment {
 
 
         private final Context mContext;
-//        ArrayList<ItemDetails> itemDetailses = new ArrayList<>();
         AQuery aqAdapter;
 
         public class SimpleViewHolder extends RecyclerView.ViewHolder {
             ImageView  imageView;
             public SimpleViewHolder(View view) {
                 super(view);
-         imageView = (ImageView) view.findViewById(R.id.photo_image);
+                imageView = (ImageView) view.findViewById(R.id.photo_image);
             }
         }
 
         public LayoutAdapter(Context context, TwoWayView recyclerView) {
 
-//            for(int loop=0;loop< PlacesDetailModel.getInstance().album.photos_set.size();loop++) {
-//                ItemDetails itemDetails = new ItemDetails();
-//                itemDetails.setTitle(PlacesDetailModel.getInstance().album.photos_set.get(loop).get_photo);
-//                itemDetailses.add(itemDetails);
-//
-//            }
+
             mContext = context;
             mRecyclerView = recyclerView;
         }
@@ -248,8 +252,6 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
-
-//            holder.imageView.setImage(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo, true, true);
             aqAdapter.id(holder.imageView).image(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo,true,true);
         }
 

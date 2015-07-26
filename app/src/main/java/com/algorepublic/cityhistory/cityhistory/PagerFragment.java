@@ -27,6 +27,7 @@ public class PagerFragment extends Fragment {
     static String cityId;
     static String CategoriesId;
     private int currentColor = 0xFFCC33;
+    private int height = 5 ;
     private final Handler handler = new Handler();
     private PagerSlidingTabStrip tabs;
 
@@ -55,7 +56,9 @@ public class PagerFragment extends Fragment {
         tabs.setViewPager(pager);
         tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
         tabs.setTextColor(getResources().getColor(R.color.Black));
-
+        tabs.setIndicatorHeight(height);
+//        ActionBar actionBar = getActivity().getActionBar();
+//        actionBar.setBackgroundDrawable(R.drawable.city);
 
          return view;
     }

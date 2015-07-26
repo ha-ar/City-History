@@ -59,6 +59,7 @@ public class PlacesFragment extends BaseFragment {
         CityView.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount){
+
                 index = page;
                 GetSearchMoreResults(page);
             }
@@ -89,7 +90,7 @@ public class PlacesFragment extends BaseFragment {
         }
     }
     public void GetSearchMoreResults(int page){
-        obj.CityDetailPage(true, page, new CallBack(PlacesFragment.this, "CityDetails"));
+        obj.CityDetailPage(CityId,CategoriesId,true, page, new CallBack(PlacesFragment.this, "CityDetails"));
 
     }
 
@@ -102,7 +103,7 @@ public class PlacesFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Log.e("a","aaaaaaa");
+
             int cityId = PlacesModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.pagerForList, PlacesDetailFragment.newInstance(cityId))

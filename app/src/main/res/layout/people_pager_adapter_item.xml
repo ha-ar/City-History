@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true" >
 
         <ImageView
-            android:id="@+id/logo_main"
+            android:id="@+id/logo_people"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:scaleType="fitXY"
@@ -20,7 +20,7 @@
 
 
         <TextView
-            android:id="@+id/title_places"
+            android:id="@+id/people_title"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="#BB000000"
@@ -30,11 +30,10 @@
             android:gravity="center"
             android:textSize="16sp"
             android:padding="5dp"
-            android:layout_alignBottom="@+id/logo_main"
-           />
+            android:layout_alignBottom="@+id/logo_people"
+            />
 
 
     </RelativeLayout>
 
 </LinearLayout>
-
