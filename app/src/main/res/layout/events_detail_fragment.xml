@@ -1,79 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/events_pager"
+    <include
+        layout="@layout/detail_actionbar"
         android:layout_width="match_parent"
-        android:layout_height="230dp">
-    </android.support.v4.view.ViewPager>
-
-    <LinearLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_below="@+id/events_pager"
-        android:orientation="horizontal"
-        android:weightSum="4">
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-    </LinearLayout>
+        android:layout_height="55dp"/>
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/layout">
-        <LinearLayout
+        android:scrollbars="none"
+         >
+
+        <RelativeLayout
+            android:background="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_below="@+id/layout"
-            android:layout_marginTop="10dp"
-            android:weightSum="4">
 
-            <TextView
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/event_pager"
+                android:layout_width="match_parent"
+                android:layout_height="205dp">
+            </android.support.v4.view.ViewPager>
 
-                android:id="@+id/title_events"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:textSize="16sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:textStyle="bold"
-                android:layout_weight="1"/>
+            <org.lucasr.twowayview.widget.TwoWayView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/event_list"
+                android:layout_below="@+id/event_pager"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                style="@style/TwoWayView"
+                app:twowayview_layoutManager="ListLayoutManager"/>
 
-            <TextView
-                android:id="@+id/disc_events"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_below="@+id/event_list"
+                android:id="@+id/layout_disc"
+                android:layout_marginTop="5dp"
+                android:weightSum="4">
+
+                <TextView
+
+                    android:id="@+id/event_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="25sp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/event_disc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/layout_disc"
+                android:layout_height="match_parent"
+                android:padding="0.1dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
+                android:background="@drawable/line_history"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/location"
+                android:orientation="vertical"
+                android:layout_below="@+id/layout_disc"
+                android:layout_marginTop="25dp"
+                android:weightSum="2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:id="@+id/event_loaction"
+                    android:layout_weight="1"
+                    android:textSize="25sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:id="@+id/event_layout_map"
+                android:orientation="vertical"
+                android:layout_below="@+id/location">
+                <fragment
+                    android:id="@+id/event_mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layout_type"
+                android:weightSum="2"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/event_layout_map">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Type:"
+                    android:layout_marginLeft="35dp"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/event_type"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/layout_type"
+                android:layout_height="match_parent"
+                android:padding="0.1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/line_history"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layout_added"
+                android:weightSum="2"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/layout_type">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Added:"
+                    android:layout_marginLeft="35dp"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/event_added"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/layout_added"
+                android:layout_height="match_parent"
+                android:padding="0.1dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/line_history"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/layout_added_by"
+                android:weightSum="2"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/layout_added">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Added by:"
+                    android:layout_marginLeft="35dp"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/event_added_by"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_below="@id/layout_added_by"
+                android:layout_height="match_parent"
+                android:padding="0.1dp"
+                android:id="@+id/view"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/line_history"/>
+            <com.google.android.gms.ads.AdView
+
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="3"/>
-        </LinearLayout>
-    </ScrollView>
+                ads:adSize="SMART_BANNER"
+                android:layout_below="@id/view"
+                ads:adUnitId="ca-app-pub-6939500014189035/5918151304"
+                />
+        </RelativeLayout>
 
-</RelativeLayout>
+        </ScrollView>
+
+    </LinearLayout>

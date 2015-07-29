@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.androidquery.AQuery;
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by waqas on 6/23/15.
@@ -30,7 +32,7 @@ public class PagerFragment extends Fragment {
     private int height = 5 ;
     private final Handler handler = new Handler();
     private PagerSlidingTabStrip tabs;
-
+    AdView adView;
 
     private Drawable oldBackground = null;
     public static PagerFragment newInstance(String cityid, boolean comingFromSaved) {
@@ -57,6 +59,8 @@ public class PagerFragment extends Fragment {
         tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
         tabs.setTextColor(getResources().getColor(R.color.Black));
         tabs.setIndicatorHeight(height);
+        adView = (AdView) view.findViewById(R.id.adView);
+        adView.loadAd(new AdRequest.Builder().build());
 //        ActionBar actionBar = getActivity().getActionBar();
 //        actionBar.setBackgroundDrawable(R.drawable.city);
 

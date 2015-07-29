@@ -81,7 +81,7 @@ public class BlogsDetailFragment extends BaseFragment {
 
     private void upDateData(){
         aq.id(R.id.title_blogs).text(BlogsDetailsModel.getInstance().title);
-        aq.id(R.id.disc_events).text(Html.fromHtml(BlogsDetailsModel.getInstance().description));
+        aq.id(R.id.event_disc).text(Html.fromHtml(BlogsDetailsModel.getInstance().description));
 
     }
 

@@ -7,9 +7,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.SaveCallback;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
@@ -25,10 +32,14 @@ public class BaseActivity extends FragmentActivity {
     static int p=1;
     private SelectCityService obj;
     MenuDrawer mDrawerLeft;
+    AdView adView;
     public static    ListView CityListView;
+    Switch button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mDrawerLeft = MenuDrawer.attach(this, MenuDrawer.Type.BEHIND, Position.LEFT, MenuDrawer.MENU_DRAG_CONTENT);
         mDrawerLeft.setContentView(R.layout.activity_main);
         mDrawerLeft.setMenuView(R.layout.layout_dropdownmenu);
@@ -36,12 +47,49 @@ public class BaseActivity extends FragmentActivity {
         mDrawerLeft.setSlideDrawable(R.drawable.menu);
         mDrawerLeft.setDrawerIndicatorEnabled(true);
         mDrawerLeft.setAllowIndicatorAnimation(true);
+        adView = (AdView) findViewById(R.id.adView);
+        adView.loadAd(new AdRequest.Builder().build());
         aq = new AQuery(BaseActivity.this);
         base = ((BaseClass)getApplicationContext());
         obj = new SelectCityService(BaseActivity.this);
-        if (SelectCityModel.getInstance().count == 0)
-            obj.SelectCity(true, new CallBack(this, "UpDateList"));
+        obj.SelectCity(true, new CallBack(this, "UpDateList"));
         CityListView = (ListView) findViewById(R.id.city_list);
+
+        button = (Switch) findViewById(R.id.switch1);
+        button.setChecked(true);
+        button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    ParsePush.subscribeInBackground("", new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
+                            } else {
+                                Log.e("com.parse.push", "failed to subscribe for push", e);
+                            }
+                        }
+                    });
+                }else{
+//                    button.setChecked(false);
+                    ParsePush.unsubscribeInBackground("", new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d("com.parse.push", "successfully UnSubscribed to the broadcast channel.");
+                            } else {
+                                Log.e("com.parse.push", "failed to UnSubscribe for push", e);
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+        });
+
     }
     public void UpDateList(Object caller, Object model) {
         SelectCityModel.getInstance().setList((SelectCityModel) model);

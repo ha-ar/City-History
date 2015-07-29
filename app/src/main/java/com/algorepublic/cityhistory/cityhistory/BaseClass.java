@@ -2,25 +2,50 @@ package com.algorepublic.cityhistory.cityhistory;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+import android.widget.Switch;
 
+import com.androidquery.AQuery;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParsePush;
+import com.parse.SaveCallback;
+
 
 /**
  * Created by waqas on 6/18/15.
  */
 public class BaseClass extends Application {
 
-    public static int saveposition = -1 ;
-
-
+    private AQuery aq;
+    Switch button;
 
     @Override
     public void onCreate() {
-        initImageLoader(getApplicationContext());
         super.onCreate();
+        Parse.initialize(this, "kFHewfZX3rGoq5oSD4ln9iiF1WTRF8zfLxZcBsRl", "LbE7tDWocZlQDqTQMQdNq2Uf5gHBa4V1pWvB0Mp7");
+        ParsePush.unsubscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d("com.parse.push", "successfully UnSubscribed to the broadcast channel.");
+                } else {
+                    Log.e("com.parse.push", "failed to UnSubscribe for push", e);
+                }
+            }
+        });
+
+
+
+
+
+
+
+        initImageLoader(getApplicationContext());
 
     }
 

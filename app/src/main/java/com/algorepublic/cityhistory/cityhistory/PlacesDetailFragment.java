@@ -39,7 +39,7 @@ import Services.PlacesDetailService;
  */
 public class PlacesDetailFragment extends BaseFragment {
     AQuery aq;
-    TextView title, disc ,type ,added  , added_by;
+    TextView title, disc ,type ,added  , added_by,home_detail;
     BaseClass base;
     ViewPager pager;
     CustomPagerAdapter mCustomPagerAdapter;
@@ -49,7 +49,7 @@ public class PlacesDetailFragment extends BaseFragment {
     MapView mapView;
     static String coordinates;
     private TwoWayView mRecyclerView;
-
+    ImageView imageView;
     int Position=0;
 
 
@@ -65,22 +65,7 @@ public class PlacesDetailFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
     }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
-        createMapView();
-        obj = new PlacesDetailService(getActivity().getApplicationContext());
-        obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
-        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView parent, View child, int position, long id) {
-                pager.setCurrentItem(position);
-                aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
-            }
-        });
 
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,10 +85,34 @@ public class PlacesDetailFragment extends BaseFragment {
         disc = (TextView) view.findViewById(R.id.disc_places);
         type = (TextView) view.findViewById(R.id.type_places);
         added = (TextView) view.findViewById(R.id.added_places);
+        imageView = (ImageView) view.findViewById(R.id.home_detail);
+        home_detail = (TextView) view.findViewById(R.id.title_header);
         added_by = (TextView) view.findViewById(R.id.added_by_places);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         return view;
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
+        createMapView();
+        obj = new PlacesDetailService(getActivity().getApplicationContext());
+        obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
+        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView parent, View child, int position, long id) {
+                pager.setCurrentItem(position);
+                aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
+            }
+        });
 
+    }
 
     private void createMapView(){
 
@@ -135,20 +144,25 @@ public class PlacesDetailFragment extends BaseFragment {
 
     private void upDateData(){
         aq.id(R.id.head_places).text(PlacesDetailModel.getInstance().title);
-        aq.id(R.id.type_places).text(PlacesDetailModel.getInstance().type.type);
+        aq.id(R.id.title_header).text(PlacesDetailModel.getInstance().title);
         aq.id(R.id.added_places).text(PlacesDetailModel.getInstance().added);
-        aq.id(R.id.added_by_places).text(PlacesDetailModel.getInstance().user.username);
+        aq.id(R.id.added_by_places).text(capSentences(PlacesDetailModel.getInstance().user.username));
         LatLong();
+        if (PlacesDetailModel.getInstance().type.type.equals("PL")){
+            aq.id(R.id.type_places).text("Places");
+        }
     }
 
     private void LatLong(){
+        if (PlacesDetailModel.getInstance().address.isEmpty()){
+          aq.id(R.id.places_mapView).visibility(View.GONE);
+        }else{
         coordinates=PlacesDetailModel.getInstance().address;
         String [] splited = coordinates.split("\\s+");
         String Lat = splited[0];
         String Lng =  splited [1];
         addMarker(Double.valueOf(Lat), Double.valueOf(Lng), PlacesDetailModel.getInstance().title);
-
-    }
+    }}
     private void addMarker(double Lat,double Lon,String Title) {
 
         if(googleMap !=null) {
@@ -202,7 +216,6 @@ public class PlacesDetailFragment extends BaseFragment {
             View itemView = mLayoutInflater.inflate(R.layout.places_pager_item, container, false);
             ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             imageView = (ImageView) itemView.findViewById(R.id.imageView_people);
-
             aq.id(imageView).progress(progressBar).image(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, true, true);
             aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
             container.addView(itemView);
@@ -219,7 +232,10 @@ public class PlacesDetailFragment extends BaseFragment {
         public GalleryPagerAdapter(FragmentActivity activity) {
         }
     }
+    private String capSentences( String text ) {
 
+        return text.substring( 0, 1 ).toUpperCase() + text.substring( 1 ).toLowerCase();
+    }
     public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleViewHolder> {
 
 
@@ -245,7 +261,7 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            final View view = LayoutInflater.from(mContext).inflate(R.layout.item_gallery, parent, false);
+            final View view = LayoutInflater.from(mContext).inflate(R.layout.places_item_gallery, parent, false);
             aqAdapter = new AQuery(view);
             return new SimpleViewHolder(view);
         }

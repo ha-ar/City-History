@@ -31,6 +31,8 @@ public class EventsDetailsModel {
     public String get_photo_thumbnail;
     public String get_photo_micro_thumbnail;
     public String main_photo;
+    public String added;
+    public String address;
     public Album album = new Album();
     public type type = new type();
     public user user = new user();
