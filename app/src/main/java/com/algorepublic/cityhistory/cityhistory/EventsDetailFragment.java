@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
-import com.androidquery.util.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,7 +42,7 @@ import Services.EventsDetailsService;
 public class EventsDetailFragment extends BaseFragment {
 
     AQuery aq;
-    TextView title, disc,type ,added  , added_by,home_detail;
+    TextView title, disc, type, added, added_by, home_detail;
     BaseClass base;
     ViewPager pager;
     CustomAdapter mCustomPagerAdapter;
@@ -56,7 +55,7 @@ public class EventsDetailFragment extends BaseFragment {
     private TwoWayView mRecyclerView;
     static String coordinates;
     ArrayList<ItemDetails> details;
-    int Position=0;
+    int Position = 0;
 
     public static EventsDetailFragment newInstance(int id) {
         Log.e("CitrdeatilsInevents ", String.valueOf(id));
@@ -65,12 +64,12 @@ public class EventsDetailFragment extends BaseFragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,8 +80,7 @@ public class EventsDetailFragment extends BaseFragment {
         adView = (AdView) view.findViewById(R.id.adView);
         adView.loadAd(new AdRequest.Builder().build());
         pager = (ViewPager) view.findViewById(R.id.event_pager);
-        mCustomPagerAdapter = new CustomAdapter(getActivity());
-        pager.setAdapter(mCustomPagerAdapter);
+
         title = (TextView) view.findViewById(R.id.event_head);
         mRecyclerView = (TwoWayView) view.findViewById(R.id.event_list);
         mRecyclerView.setHasFixedSize(true);
@@ -100,6 +98,7 @@ public class EventsDetailFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().popBackStack();
+
             }
         });
         return view;
@@ -112,13 +111,14 @@ public class EventsDetailFragment extends BaseFragment {
         createMapView();
         obj = new EventsDetailsService(getActivity().getApplicationContext());
         obj.CityEventsDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
+        Log.e("Hit",PlaceId+"");
         itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-        @Override
-        public void onItemClick(RecyclerView parent, View child, int position, long id) {
-            pager.setCurrentItem(position);
-            aq.id(R.id.event_disc).text(Html.fromHtml(EventsDetailsModel.getInstance().album.photos_set.get(position).description));
-        }
-    });
+            @Override
+            public void onItemClick(RecyclerView parent, View child, int position, long id) {
+                pager.setCurrentItem(position);
+                aq.id(R.id.event_disc).text(Html.fromHtml(EventsDetailsModel.getInstance().album.photos_set.get(position).description));
+            }
+        });
     }
 
     @Override
@@ -127,10 +127,10 @@ public class EventsDetailFragment extends BaseFragment {
         super.onResume();
     }
 
-    private void createMapView(){
+    private void createMapView() {
 
         try {
-            if(googleMap == null){
+            if (googleMap == null) {
 
                 if (Build.VERSION.SDK_INT < 16) {
                     googleMap = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.event_mapView)).getMap();
@@ -140,49 +140,54 @@ public class EventsDetailFragment extends BaseFragment {
 
                 }
             }
-        } catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             Log.e("mapApp", exception.toString());
         }
 
     }
-    public void CityPlacesDetails(Object caller, Object model) {
 
+    public void CityPlacesDetails(Object caller, Object model) {
+        EventsDetailsModel.getInstance().album.photos_set.clear();
         EventsDetailsModel.getInstance().setList((EventsDetailsModel) model);
-        mRecyclerView.setAdapter(new LayoutAdapter(getActivity(),mRecyclerView));
+        mCustomPagerAdapter = new CustomAdapter(getActivity());
+        pager.setAdapter(mCustomPagerAdapter);
+        mRecyclerView.setAdapter(new LayoutAdapter(getActivity(), mRecyclerView));
         mCustomPagerAdapter.notifyDataSetChanged();
         upDateData();
 
     }
 
-    private void upDateData(){
+    private void upDateData() {
         aq.id(R.id.event_head).text(EventsDetailsModel.getInstance().title);
         aq.id(R.id.title_header).text(EventsDetailsModel.getInstance().title);
         aq.id(R.id.event_added).text(EventsDetailsModel.getInstance().added);
-        if (EventsDetailsModel.getInstance().address.isEmpty()){
+        if (EventsDetailsModel.getInstance().address.isEmpty()) {
             aq.id(R.id.event_layout_map).visibility(View.GONE);
             aq.id(R.id.location).visibility(View.GONE);
         }
         aq.id(R.id.event_added_by).text(capSentences(EventsDetailsModel.getInstance().user.username));
         LatLong();
-        if (EventsDetailsModel.getInstance().type.type.equals("EV")){
+        if (EventsDetailsModel.getInstance().type.type.equals("EV")) {
             aq.id(R.id.event_type).text("Events");
         }
 
     }
-    private void LatLong(){
-        if (EventsDetailsModel.getInstance().address.isEmpty()){
-            aq.id(R.id.event_mapView).visibility(View.GONE);
-        }else{
-            coordinates=EventsDetailsModel.getInstance().address;
-            String [] splited = coordinates.split("\\s+");
-            String Lat = splited[0];
-            String Lng =  splited [1];
-            addMarker(Double.valueOf(Lat), Double.valueOf(Lng), EventsDetailsModel.getInstance().title);
-        }}
-    private void addMarker(double Lat,double Lon,String Title) {
 
-        if(googleMap !=null) {
-            Log.e("awww", "cac");
+    private void LatLong() {
+        if (EventsDetailsModel.getInstance().address.isEmpty()) {
+            aq.id(R.id.event_mapView).visibility(View.GONE);
+        } else {
+            coordinates = EventsDetailsModel.getInstance().address;
+            String[] splited = coordinates.split("\\s+");
+            String Lat = splited[0];
+            String Lng = splited[1];
+            addMarker(Double.valueOf(Lat), Double.valueOf(Lng), EventsDetailsModel.getInstance().title);
+        }
+    }
+
+    private void addMarker(double Lat, double Lon, String Title) {
+
+        if (googleMap != null) {
             googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(Lat, Lon))
                             .title(Title)
@@ -196,16 +201,18 @@ public class EventsDetailFragment extends BaseFragment {
 
     }
 
-    private String capSentences( String text ) {
+    private String capSentences(String text) {
 
-        return text.substring( 0, 1 ).toUpperCase() + text.substring( 1 ).toLowerCase();
+        return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
     }
+
     class CustomAdapter extends PagerAdapter {
         Context mContext;
         LayoutInflater mLayoutInflater;
         ImageView imageView;
+
         public CustomAdapter(Context context) {
-            Position =0;
+            Position = 0;
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -214,16 +221,19 @@ public class EventsDetailFragment extends BaseFragment {
         public int getCount() {
 
             try {
+                Log.e("click",EventsDetailsModel.getInstance().album.photos_set.size()+"");
                 return EventsDetailsModel.getInstance().album.photos_set.size();
-            }catch (NullPointerException e){
-                aq.id(R.id.pager).visibility(Constants.GONE);
+            } catch (NullPointerException e) {
+//                aq.id(R.id.event_pager).visibility(Constants.GONE);
                 return 0;
             }
         }
+
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view ==  object;
+            return view == object;
         }
+
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Position = position;
@@ -235,6 +245,7 @@ public class EventsDetailFragment extends BaseFragment {
             container.addView(itemView);
             return itemView;
         }
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
 
@@ -249,7 +260,8 @@ public class EventsDetailFragment extends BaseFragment {
         AQuery aqAdapter;
 
         public class SimpleViewHolder extends RecyclerView.ViewHolder {
-            ImageView  imageView;
+            ImageView imageView;
+
             public SimpleViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.event_photo_image);
@@ -257,12 +269,9 @@ public class EventsDetailFragment extends BaseFragment {
         }
 
         public LayoutAdapter(Context context, TwoWayView recyclerView) {
-
-
             mContext = context;
             mRecyclerView = recyclerView;
         }
-
 
 
         @Override
@@ -274,12 +283,17 @@ public class EventsDetailFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            aqAdapter.id(holder.imageView).image(EventsDetailsModel.getInstance().album.photos_set.get(position).get_photo,true,true);
+            aqAdapter.id(holder.imageView).image(EventsDetailsModel.getInstance().album.photos_set.get(position).get_photo, true, true);
         }
 
         @Override
         public int getItemCount() {
-            return EventsDetailsModel.getInstance().album.photos_set.size();
+            try {
+                return EventsDetailsModel.getInstance().album.photos_set.size();
+            } catch (NullPointerException e) {
+                aq.id(R.id.event_list).visibility(View.GONE);
+                return 0;
+            }
         }
     }
 }

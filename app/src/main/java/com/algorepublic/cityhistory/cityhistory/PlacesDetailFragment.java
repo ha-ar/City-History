@@ -17,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -51,6 +53,7 @@ public class PlacesDetailFragment extends BaseFragment {
     private TwoWayView mRecyclerView;
     ImageView imageView;
     int Position=0;
+    AdView adView;
 
 
     public static PlacesDetailFragment newInstance(int id) {
@@ -74,9 +77,10 @@ public class PlacesDetailFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.places_detail_fragment, container, false);
         aq = new AQuery(getActivity(), view);
         base = ((BaseClass) getActivity().getApplicationContext());
+        adView = (AdView) view.findViewById(R.id.adView);
+        adView.loadAd(new AdRequest.Builder().build());
         pager = (ViewPager) view.findViewById(R.id.pager);
-        mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
-        pager.setAdapter(mCustomPagerAdapter);
+
         title = (TextView) view.findViewById(R.id.head_places);
         mRecyclerView = (TwoWayView) view.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
@@ -134,8 +138,10 @@ public class PlacesDetailFragment extends BaseFragment {
     }
 
     public void CityPlacesDetails(Object caller, Object model) {
-
+        PlacesDetailModel.getInstance().album.photos_set.clear();
         PlacesDetailModel.getInstance().setList((PlacesDetailModel) model);
+        mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
+        pager.setAdapter(mCustomPagerAdapter);
         mRecyclerView.setAdapter(new LayoutAdapter(getActivity(),mRecyclerView));
         mCustomPagerAdapter.notifyDataSetChanged();
         upDateData();
@@ -243,7 +249,8 @@ public class PlacesDetailFragment extends BaseFragment {
         AQuery aqAdapter;
 
         public class SimpleViewHolder extends RecyclerView.ViewHolder {
-            ImageView  imageView;
+            ImageView imageView;
+
             public SimpleViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.photo_image);
@@ -258,7 +265,6 @@ public class PlacesDetailFragment extends BaseFragment {
         }
 
 
-
         @Override
         public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(mContext).inflate(R.layout.places_item_gallery, parent, false);
@@ -268,15 +274,21 @@ public class PlacesDetailFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            aqAdapter.id(holder.imageView).image(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo,true,true);
+            aqAdapter.id(holder.imageView).image(PlacesDetailModel.getInstance().album.photos_set.get(position).get_photo, true, true);
         }
 
         @Override
         public int getItemCount() {
-            return PlacesDetailModel.getInstance().album.photos_set.size();
+
+            Log.e("Size", PlacesDetailModel.getInstance().album.photos_set.size() + "");
+            try {
+                return PlacesDetailModel.getInstance().album.photos_set.size();
+            } catch (NullPointerException e) {
+                aq.id(R.id.list).visibility(View.GONE);
+                return 0;
+            }
         }
     }
-
 }
 
 

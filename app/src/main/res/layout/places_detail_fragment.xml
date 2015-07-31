@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
 
 
@@ -204,12 +204,22 @@
             android:layout_below="@id/layout_added_by"
             android:layout_height="match_parent"
             android:padding="0.1dp"
+            android:id="@+id/view"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="22dp"
             android:layout_marginBottom="40dp"
             android:layout_marginRight="22dp"
             android:background="@drawable/line_history"/>
+        <com.google.android.gms.ads.AdView
 
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            android:layout_below="@id/view"
+            ads:adUnitId="ca-app-pub-6939500014189035/5918151304">
+
+        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </ScrollView>
     </LinearLayout>

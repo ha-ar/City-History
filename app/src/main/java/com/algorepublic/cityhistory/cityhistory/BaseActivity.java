@@ -1,5 +1,7 @@
 package com.algorepublic.cityhistory.cityhistory;
 
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -14,9 +16,7 @@ import android.widget.Switch;
 import com.androidquery.AQuery;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.parse.ParseException;
-import com.parse.ParsePush;
-import com.parse.SaveCallback;
+import com.parse.GcmBroadcastReceiver;
 
 import net.simonvt.menudrawer.MenuDrawer;
 import net.simonvt.menudrawer.Position;
@@ -60,32 +60,22 @@ public class BaseActivity extends FragmentActivity {
         button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    ParsePush.subscribeInBackground("", new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
-                            } else {
-                                Log.e("com.parse.push", "failed to subscribe for push", e);
-                            }
-                        }
-                    });
+                Log.e("Switch Value", "" + b);
+                if(b == true){
+                    Log.e("Subscribe", "Yes");
+                    PackageManager pm  = BaseActivity.this.getPackageManager();
+                    ComponentName componentName = new ComponentName(BaseActivity.this, GcmBroadcastReceiver.class);
+                    pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+
                 }else{
-//                    button.setChecked(false);
-                    ParsePush.unsubscribeInBackground("", new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d("com.parse.push", "successfully UnSubscribed to the broadcast channel.");
-                            } else {
-                                Log.e("com.parse.push", "failed to UnSubscribe for push", e);
-                            }
-                        }
-                    });
+                    Log.e("UnSubscribe", "Yes");
+                    PackageManager pm  = BaseActivity.this.getPackageManager();
+                    ComponentName componentName = new ComponentName(BaseActivity.this, GcmBroadcastReceiver.class);
+                    pm.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
 
                 }
-
 
             }
         });
