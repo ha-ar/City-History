@@ -42,7 +42,6 @@ public class BaseClass extends Application {
         return tracker;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
