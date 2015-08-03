@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.analytics.HitBuilders;
 
 import Model.EventsModel;
 import Services.CallBack;
@@ -87,8 +88,12 @@ public class EventsFragment extends BaseFragment {
     }
 
     public class EventsListner implements AdapterView.OnItemClickListener {
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BaseClass.tracker().send(new HitBuilders.EventBuilder("Events View", "Open")
+                    .setAction("Event Selected")
+                    .setLabel("Events click analytics").build());
             int cityId = EventsModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.pagerForList, EventsDetailFragment.newInstance(cityId))

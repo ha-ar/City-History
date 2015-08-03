@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.analytics.HitBuilders;
 
 import Model.EventsModel;
 import Model.PeoplesModel;
@@ -91,6 +92,9 @@ public class PeopleFragment extends BaseFragment {
     public class EventsListner implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BaseClass.tracker().send(new HitBuilders.EventBuilder("Pleple View", "Open")
+                    .setAction("People Selected")
+                    .setLabel("Peoples click analytics").build());
             int cityId = EventsModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.pagerForList, PeoplesDetailFragment.newInstance(cityId))

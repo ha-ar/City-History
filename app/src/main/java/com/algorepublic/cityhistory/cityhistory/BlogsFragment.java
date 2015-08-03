@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.analytics.HitBuilders;
 
 import Model.BlogsModel;
 import Services.BlogService;
@@ -94,6 +95,9 @@ public class BlogsFragment extends BaseFragment {
     public class EventsListner implements AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BaseClass.tracker().send(new HitBuilders.EventBuilder("Blogs View", "Open")
+                    .setAction("Blog Selected")
+                    .setLabel("Blogs click analytics").build());
             int cityId = BlogsModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.pagerForList, BlogsDetailFragment.newInstance(cityId))
