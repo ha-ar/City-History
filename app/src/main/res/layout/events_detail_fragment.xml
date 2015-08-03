@@ -3,6 +3,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
     <include
         layout="@layout/detail_actionbar"
@@ -204,12 +205,14 @@
             <com.google.android.gms.ads.AdView
 
                 android:id="@+id/adView"
+                android:layout_below="@id/view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 ads:adSize="SMART_BANNER"
-                android:layout_below="@id/view"
-                ads:adUnitId="ca-app-pub-6939500014189035/5918151304"
-                />
+                android:layout_alignParentBottom="true"
+                ads:adUnitId="ca-app-pub-6939500014189035/5918151304">
+
+        </com.google.android.gms.ads.AdView>
         </RelativeLayout>
 
         </ScrollView>

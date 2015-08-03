@@ -16,7 +16,7 @@ public class EventsDetailsService extends BaseService {
 
     public void CityEventsDetails(int PlaceId,boolean message, CallBack obj){
         String url = Constants.BASE_URL + "articles/" + PlaceId + Constants.CITY_PlACES_DETAIL_URL;
-        Log.e("CityPlacesDetails Url", url);
+        Log.e("url", url);
         this.get(url, obj, EventsDetailsModel.getInstance(), message);
     }
 }

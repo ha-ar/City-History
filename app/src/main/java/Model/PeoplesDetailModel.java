@@ -30,11 +30,12 @@ public class PeoplesDetailModel {
     public String get_photo;
     public String get_photo_thumbnail;
     public String get_photo_micro_thumbnail;
-    public String main_photo;
+    public String added;
+    public String address;
     public Album album = new Album();
-    public type type = new type();
-    public user user = new user();
-    public site site = new site();
+    public Type type = new Type();
+    public User user = new User();
+    public Site site = new Site();
     public class Album {
         public int id;
         public String title;
@@ -54,13 +55,13 @@ public class PeoplesDetailModel {
 
     }
 
-    public class type{
+    public class Type{
         public int id;
         public String type;
 
     }
 
-    public class user{
+    public class User{
 
         public int id;
         public String username;
@@ -68,7 +69,7 @@ public class PeoplesDetailModel {
         public String last_name;
     }
 
-    public class site{
+    public class Site{
 
         public int id;
         public String name;
