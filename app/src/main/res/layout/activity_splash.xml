@@ -8,13 +8,16 @@
      >
 
 
-    <ImageView
+    <TextView
         android:id="@+id/imgLogo"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="60dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/histroy"
+        android:text="City History"
+        android:gravity="center"
+        android:textSize="26sp"
+        android:textColor="@android:color/white"
 
         />
 

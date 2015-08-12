@@ -27,12 +27,12 @@ public class BaseService {
     }
 
     public void get(String url, final CallBack callBack, final Object model, boolean showProgress){
-
         ProgressDialog progressDialog = null;
         if(showProgress){
             progressDialog = new ProgressDialog(aq.getContext());
             progressDialog.setCancelable(true);
             progressDialog.setMessage("Loading...");
+
         }
         aq.progress(progressDialog).ajax(url, JSONObject.class,
                 new AjaxCallback<JSONObject>() {

@@ -1,5 +1,6 @@
 package com.algorepublic.cityhistory.cityhistory;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class PlacesFragment extends BaseFragment {
     PlacesAdapter selectCityAdapter;
     GridView CityView;
     int index;
+    ProgressDialog progressDialog;
 
     static String CategoriesId;
     static String CityId;
@@ -53,6 +55,9 @@ public class PlacesFragment extends BaseFragment {
         aq = new AQuery(getActivity(), view);
         CityView = (GridView) view.findViewById(R.id.city_details);
         CityView.setNumColumns(2);
+        progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         base = ((BaseClass) getActivity().getApplicationContext());
         obj = new PlacesService(getActivity().getApplicationContext());
         obj.CityDetails(CityId,CategoriesId,true, new CallBack(this, "CityDetails"));
@@ -75,13 +80,16 @@ public class PlacesFragment extends BaseFragment {
     }
 
     public void CityDetails(Object caller, Object model) {
+        progressDialog.dismiss();
         if(index==0)
         {
             PlacesModel.getInstance().setList((PlacesModel) model);
             if (PlacesModel.getInstance().previous ==null) {
+
                 aq.id(R.id.city_details).itemClicked(new CityListner());
                 selectCityAdapter = new PlacesAdapter(getActivity());
                 CityView.setAdapter(selectCityAdapter);
+
             }
         }else{
 

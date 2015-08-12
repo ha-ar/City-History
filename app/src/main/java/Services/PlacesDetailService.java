@@ -15,7 +15,7 @@ public class PlacesDetailService extends BaseService {
         super(ctx);
     }
 
-    public void CityPlacesDetails(int PlaceId,boolean message, CallBack obj){
+    public void CityPlacesDetails(boolean message,int PlaceId, CallBack obj){
         String url = Constants.BASE_URL + "articles/" + PlaceId + Constants.CITY_PlACES_DETAIL_URL;
         Log.e("CityPlacesDetails Url",url);
         this.get(url, obj, PlacesDetailModel.getInstance(), message);

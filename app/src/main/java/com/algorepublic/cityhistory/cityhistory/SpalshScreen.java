@@ -13,7 +13,7 @@ import android.view.animation.Animation;
 public class SpalshScreen extends Activity {
     Animation animFadein;
 
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT =700;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -3,7 +3,10 @@ package com.algorepublic.cityhistory.cityhistory;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
+import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +36,8 @@ import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.TwoWayView;
 
+import java.util.ArrayList;
+
 import Model.PlacesDetailModel;
 import Services.CallBack;
 import Services.PlacesDetailService;
@@ -41,7 +47,8 @@ import Services.PlacesDetailService;
  */
 public class PlacesDetailFragment extends BaseFragment {
     AQuery aq;
-    TextView title, disc ,type ,added  , added_by,home_detail;
+
+    TextView title,disc ,type ,added  , added_by,home_detail;
     BaseClass base;
     ViewPager pager;
     CustomPagerAdapter mCustomPagerAdapter;
@@ -50,11 +57,15 @@ public class PlacesDetailFragment extends BaseFragment {
     GoogleMap googleMap;
     MapView mapView;
     static String coordinates;
+    static String subyear;
     private TwoWayView mRecyclerView;
     ImageView imageView;
     int Position=0;
     AdView adView;
-
+    ArrayList<String> stringArrayList;
+    private int height = 5 ;
+    ViewPager peoplePager;
+    private PagerSlidingTabStrip tabs;
 
     public static PlacesDetailFragment newInstance(int id) {
         Log.e("CitrdeatilsInplaces ", String.valueOf(id));
@@ -80,7 +91,11 @@ public class PlacesDetailFragment extends BaseFragment {
         adView = (AdView) view.findViewById(R.id.adView);
         adView.loadAd(new AdRequest.Builder().build());
         pager = (ViewPager) view.findViewById(R.id.pager);
+        tabs = (PagerSlidingTabStrip) view.findViewById(R.id.people_tabs);
+        peoplePager = (ViewPager) view.findViewById(R.id.people_pagerForList);
 
+
+        adView = (AdView) view.findViewById(R.id.adView);
         title = (TextView) view.findViewById(R.id.head_places);
         mRecyclerView = (TwoWayView) view.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
@@ -101,13 +116,14 @@ public class PlacesDetailFragment extends BaseFragment {
 
         return view;
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
         createMapView();
         obj = new PlacesDetailService(getActivity().getApplicationContext());
-        obj.CityPlacesDetails(PlaceId, true, new CallBack(this, "CityPlacesDetails"));
+        obj.CityPlacesDetails( true,PlaceId, new CallBack(this, "CityPlacesDetails"));
         itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View child, int position, long id) {
@@ -137,14 +153,36 @@ public class PlacesDetailFragment extends BaseFragment {
 
     }
 
+
     public void CityPlacesDetails(Object caller, Object model) {
         PlacesDetailModel.getInstance().album.photos_set.clear();
         PlacesDetailModel.getInstance().setList((PlacesDetailModel) model);
         mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
-        mRecyclerView.setAdapter(new LayoutAdapter(getActivity(),mRecyclerView));
+        mRecyclerView.setAdapter(new LayoutAdapter(getActivity(), mRecyclerView));
         mCustomPagerAdapter.notifyDataSetChanged();
         upDateData();
+        stringArrayList = new ArrayList<String>();
+        for(int loop=0;loop< PlacesDetailModel.getInstance().articledetails_set.size();loop++)
+        {
+            Log.e("subyear","subyear");
+            subyear=PlacesDetailModel.getInstance().articledetails_set.get(loop).original_date;
+            Log.e("subyear",subyear);
+            String [] splited = subyear.split("-");
+            String year = splited[0];
+            if(!stringArrayList.contains(year))
+            stringArrayList.add(year);
+        }
+
+        PageAdapter pagerAdapter = new PageAdapter(getChildFragmentManager());
+        peoplePager.setAdapter(pagerAdapter);
+
+        tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
+        tabs.setTextColor(getResources().getColor(R.color.Black));
+        tabs.setIndicatorHeight(height);
+        tabs.setDividerColor(getResources().getColor(R.color.Black));
+        tabs.setViewPager(peoplePager);
+
 
     }
 
@@ -172,7 +210,7 @@ public class PlacesDetailFragment extends BaseFragment {
     private void addMarker(double Lat,double Lon,String Title) {
 
         if(googleMap !=null) {
-            Log.e("awww", "cac");
+
             googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(Lat, Lon))
                             .title(Title)
@@ -190,16 +228,16 @@ public class PlacesDetailFragment extends BaseFragment {
         Context mContext;
         ImageView imageView;
         LayoutInflater mLayoutInflater;
+        public CustomPagerAdapter() {
 
+        }
         public CustomPagerAdapter(Context context) {
             Position =0;
             mContext = context;
             mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public CustomPagerAdapter() {
-            super();
-        }
+
         @Override
         public int getCount() {
 
@@ -233,7 +271,36 @@ public class PlacesDetailFragment extends BaseFragment {
 
         }
     }
+    public class PageAdapter extends FragmentStatePagerAdapter {
 
+        private String[] TITLES;
+
+        public PageAdapter(FragmentManager fm) {
+            super(fm);
+            TITLES = stringArrayList.toArray(new String[stringArrayList.size()]);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position)
+            {
+                case 0:
+               return   Twentyfifteen.newInstance(PlaceId);
+            }
+            return null;
+        }
+
+    }
     private class GalleryPagerAdapter {
         public GalleryPagerAdapter(FragmentActivity activity) {
         }

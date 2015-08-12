@@ -44,7 +44,8 @@ public class PeoplesDetailFragment extends BaseFragment {
 
 
     AQuery aq;
-    TextView title, disc,type ,added , added_by,home_detail;
+
+    TextView title,type ,disc,added , added_by,home_detail;
     BaseClass base;
     ViewPager pager;
     Adapter mCustomPagerAdapter;

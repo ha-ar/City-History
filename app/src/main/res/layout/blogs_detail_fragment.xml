@@ -52,11 +52,21 @@
                     android:visibility="gone"
                     app:twowayview_layoutManager="ListLayoutManager"/>
             </LinearLayout>
+            <com.google.android.gms.ads.AdView
+
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                ads:adSize="SMART_BANNER"
+                android:layout_below="@id/blog_lay"
+
+                ads:adUnitId="ca-app-pub-6939500014189035/5918151304">
+            </com.google.android.gms.ads.AdView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_below="@+id/blog_lay"
+                android:layout_below="@+id/adView"
                 android:id="@+id/layout_disc"
                 android:layout_marginTop="5dp"
                 android:weightSum="4">
@@ -64,13 +74,11 @@
 
                     android:id="@+id/blog_head"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:textSize="25sp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
+                    android:maxLines="2"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:layout_weight="1"/>
+                    android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/blog_disc"
                     android:layout_width="wrap_content"
@@ -218,16 +226,7 @@
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="22dp"
                 android:background="@drawable/line_history"/>
-            <com.google.android.gms.ads.AdView
 
-                android:id="@+id/adView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                ads:adSize="SMART_BANNER"
-                android:layout_below="@id/view"
-                ads:adUnitId="ca-app-pub-6939500014189035/5918151304"
-                >
-            </com.google.android.gms.ads.AdView>
         </RelativeLayout>
 
     </ScrollView>
