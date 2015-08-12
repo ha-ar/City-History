@@ -35,7 +35,7 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.google.android.gms:play-services:+'
     compile project(':menudrawer')
-
+    compile 'com.github.bluejamesbond:textjustify-android:2.1.0'
     compile project(':circularImageView')
     //        compile 'org.lucasr.twowayview:twowayview:0.1.4'
     compile 'com.android.support:appcompat-v7:21.0.0'
