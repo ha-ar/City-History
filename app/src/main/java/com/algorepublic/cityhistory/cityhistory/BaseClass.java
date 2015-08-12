@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.Switch;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -23,27 +25,44 @@ public class BaseClass extends Application {
 
     private AQuery aq;
     Switch button;
+    String APP_KEY = "UA-55105459-3";
+    public static GoogleAnalytics analytics;
+    public static Tracker tracker;
+
+    public static GoogleAnalytics analytics() {
+        return analytics;
+    }
+
+    /**
+     * The default app tracker. If this method returns null you forgot to either set
+     * android:name="&lt;this.class.name&gt;" attribute on your application element in
+     * AndroidManifest.xml or you are not setting this.tracker field in onCreate method override.
+     */
+    public static Tracker tracker() {
+        return tracker;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        analytics = GoogleAnalytics.getInstance(this);
+        analytics.setLocalDispatchPeriod(1800);
         Parse.initialize(this, "kFHewfZX3rGoq5oSD4ln9iiF1WTRF8zfLxZcBsRl", "LbE7tDWocZlQDqTQMQdNq2Uf5gHBa4V1pWvB0Mp7");
         ParsePush.unsubscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.d("com.parse.push", "successfully UnSubscribed to the broadcast channel.");
+                    Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
                 } else {
-                    Log.e("com.parse.push", "failed to UnSubscribe for push", e);
+                    Log.e("com.parse.push", "failed to subscribe for push", e);
                 }
             }
         });
 
-
-
-
-
-
+        tracker = analytics.newTracker(APP_KEY);
+        tracker.enableExceptionReporting(true);
+        tracker.enableAdvertisingIdCollection(true);
+        tracker.enableAutoActivityTracking(true);
 
         initImageLoader(getApplicationContext());
 

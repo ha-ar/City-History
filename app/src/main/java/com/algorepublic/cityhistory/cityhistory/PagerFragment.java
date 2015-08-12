@@ -15,6 +15,7 @@ import com.androidquery.AQuery;
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
 
 /**
  * Created by waqas on 6/23/15.
@@ -92,6 +93,9 @@ public class PagerFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
+            BaseClass.tracker().send(new HitBuilders.EventBuilder("Pager View", "Tap")
+                    .setAction("Taped")
+                    .setLabel("Pager View Action").build());
             switch (position)
             {
                 case 0:

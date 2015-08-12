@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.androidquery.AQuery;
+import com.google.android.gms.analytics.HitBuilders;
 
 import Model.PlacesModel;
 import Services.CallBack;
@@ -111,6 +112,9 @@ public class PlacesFragment extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            BaseClass.tracker().send(new HitBuilders.EventBuilder("Places View", "Open")
+                    .setAction("Place Selected")
+                    .setLabel("Places click analytics").build());
 
             int cityId = PlacesModel.getInstance().results.get(position).id;
             getActivity().getSupportFragmentManager().beginTransaction()
