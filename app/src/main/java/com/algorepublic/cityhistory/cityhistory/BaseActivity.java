@@ -108,7 +108,7 @@ public class BaseActivity extends FragmentActivity {
         CityListView.setAdapter(selectCityAdapter);
 //        name.add("Cities");
         for (int k =0 ; k < SelectCityModel.getInstance().results.size(); k++) {
-            name.add(SelectCityModel.getInstance().results.get(k).name);
+            name.add(capSentences(SelectCityModel.getInstance().results.get(k).name));
         }
         name.add("Cities");
         dataAdapter = new ArrayAdapter<String>
@@ -124,6 +124,12 @@ public class BaseActivity extends FragmentActivity {
         spinner1.setSelection(dataAdapter.getCount());
         spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
+    }
+
+
+    private String capSentences( String text ) {
+
+        return text.substring( 0, 1 ).toUpperCase() + text.substring( 1 ).toLowerCase();
     }
 
     public class SelectCityListner implements AdapterView.OnItemClickListener{
