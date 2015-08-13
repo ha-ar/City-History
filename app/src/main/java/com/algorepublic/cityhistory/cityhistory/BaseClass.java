@@ -28,6 +28,7 @@ public class BaseClass extends Application {
     String APP_KEY = "UA-55105459-3";
     public static GoogleAnalytics analytics;
     public static Tracker tracker;
+     static int k = 0;
 
     public static GoogleAnalytics analytics() {
         return analytics;

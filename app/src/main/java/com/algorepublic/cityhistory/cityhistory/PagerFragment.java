@@ -34,7 +34,7 @@ public class PagerFragment extends Fragment {
     private PagerSlidingTabStrip tabs;
     AdView adView;
 
-    public static PagerFragment newInstance(String cityid, boolean comingFromSaved) {
+    public static PagerFragment newInstance(String cityid) {
         PagerFragment fragment = new PagerFragment();
         cityId = cityid;
         Bundle args = new Bundle();
