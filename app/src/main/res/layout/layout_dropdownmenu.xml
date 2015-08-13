@@ -11,32 +11,32 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             >
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/user_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/profile_sky"
-                android:layout_marginLeft="20dp"
-                android:layout_margin="10dp"
-                android:visibility="visible"
-                android:layout_gravity="center_vertical"
-                />
+            <!--<com.mikhaellopez.circularimageview.CircularImageView-->
+                <!--android:id="@+id/user_image"-->
+                <!--android:layout_width="70dp"-->
+                <!--android:layout_height="70dp"-->
+                <!--android:src="@drawable/profile_sky"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:visibility="visible"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--/>-->
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_marginTop="100dp"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/user_name"
-                android:textSize="16sp"
-                android:textStyle="bold"
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:layout_marginTop="100dp"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:id="@+id/user_name"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"-->
 
-                android:layout_toRightOf="@id/user_image"
+                <!--android:layout_toRightOf="@id/user_image"-->
 
-                />
+                <!--/>-->
 
         </LinearLayout>
         <TextView
@@ -44,22 +44,22 @@
             android:layout_marginLeft="10dp"
             android:background="#88676767"
             android:layout_height="1dp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:id="@+id/layout_list"
-            android:layout_height="50dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:id="@+id/layout_list"-->
+            <!--android:layout_height="50dp">-->
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Your Saved Searches"
-                android:textColor="@android:color/white"
-                android:id="@+id/List"
-                android:paddingLeft="20dp"
-                android:layout_gravity="center_vertical"/>
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="Your Saved Searches"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:id="@+id/List"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:layout_gravity="center_vertical"/>-->
+        <!--</LinearLayout>-->
         <TextView
             android:layout_width="match_parent"
             android:layout_marginLeft="10dp"
@@ -68,17 +68,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/layout_internal"
+            android:weightSum="2"
+            android:padding="5dp"
             android:layout_height="50dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Country"
-                android:textColor="@android:color/white"
-                android:id="@+id/internal"
-                android:paddingLeft="20dp"
-                android:layout_gravity="center_vertical"/>
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="Cities:"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:id="@+id/internal"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:layout_gravity="center_vertical"/>-->
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="@android:color/darker_gray"
+
+                 />
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
@@ -174,7 +185,8 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-            android:orientation="horizontal"
+        android:orientation="horizontal"
+
         android:layout_height="50dp">
 
         <TextView
@@ -182,11 +194,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Logout"
+
             android:textColor="@android:color/white"
             android:id="@+id/logout_text"
             android:gravity="center"
             android:paddingLeft="20dp"
-
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>

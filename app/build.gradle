@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.algorepublic.cityhistory.cityhistory"
-        minSdkVersion 13
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -42,4 +42,5 @@ dependencies {
     compile project(':core')
     compile 'com.parse.bolts:bolts-android:1.2.0'
     compile project(':layouts')
+    compile 'com.parse.bolts:bolts-android:1.1.2'
 }

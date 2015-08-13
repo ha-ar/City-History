@@ -38,6 +38,9 @@ public class SelectCityModel {
         public String name;
         public String domain;
 
+
+
+
     }
 
 }
