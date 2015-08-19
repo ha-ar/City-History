@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:id="@+id/title_header"
         android:textSize="18sp"
-        android:ems="18"
+        android:ems="14"
         android:ellipsize="end"
         android:singleLine="true"
         android:gravity="center"
@@ -27,6 +27,16 @@
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
       />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/arroww"
+        android:id="@+id/home_detail2"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_toRightOf="@+id/title_header"
+        />
     <!--<ImageView-->
         <!--android:layout_width="23dp"-->
         <!--android:layout_height="20dp"-->

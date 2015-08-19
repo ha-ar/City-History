@@ -1,8 +1,10 @@
 package net.simonvt.menudrawer;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -57,6 +59,7 @@ public class SlidingDrawer extends DraggableDrawer {
         animateOffsetTo(0, 0, animate);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onOffsetPixelsChanged(int offsetPixels) {
         if (USE_TRANSLATIONS) {
@@ -180,6 +183,7 @@ public class SlidingDrawer extends DraggableDrawer {
      *
      * @param offsetPixels The number of pixels the content if offset.
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void offsetMenu(int offsetPixels) {
         if (!mOffsetMenu || mMenuSize == 0) {
             return;
@@ -692,6 +696,7 @@ public class SlidingDrawer extends DraggableDrawer {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.FROYO)
     private void onPointerUp(MotionEvent ev) {
         final int pointerIndex = ev.getActionIndex();
         final int pointerId = ev.getPointerId(pointerIndex);

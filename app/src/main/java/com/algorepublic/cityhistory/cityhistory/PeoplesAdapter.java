@@ -48,7 +48,7 @@ public class PeoplesAdapter extends BaseAdapter {
                 int cityId = PeoplesModel.getInstance().results.get(position).id;
                 Log.e("CitydeatilsId", String.valueOf(PeoplesModel.getInstance().results.get(position).id));
                 ((FragmentActivity) ctx) .getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, PeoplesDetailFragment.newInstance(cityId))
+                        .add(R.id.container, PeoplesDetailFragment.newInstance(cityId))
                         .addToBackStack(null).commit();
             }
         });

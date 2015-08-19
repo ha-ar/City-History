@@ -45,7 +45,7 @@ public class EventsAdapter extends BaseAdapter {
                 int cityId = EventsModel.getInstance().results.get(position).id;
                 Log.e("CitydeatilsId", String.valueOf(EventsModel.getInstance().results.get(position).id));
                 ((FragmentActivity) ctx) .getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, EventsDetailFragment.newInstance(cityId))
+                        .add(R.id.container, EventsDetailFragment.newInstance(cityId))
                         .addToBackStack(null).commit();
             }
         });

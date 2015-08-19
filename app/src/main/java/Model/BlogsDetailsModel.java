@@ -82,8 +82,31 @@ public class BlogsDetailsModel {
     public ArrayList<articledetails_set> articledetails_set = new ArrayList<articledetails_set>();
 
     public class articledetails_set{
+        public   String id;
+        public String title;
+        public String description;
+        public Album album = new Album();
+        public String original_date;
+        public class Album {
+            public int id;
+            public String title;
+            public String description;
+            public int added;
+            public String slug;
+            public String address;
+            public ArrayList<PhotosSet> photos_set = new ArrayList<PhotosSet>();
+        }
+        public class PhotosSet{
+            public int id;
+            public String title;
+            public String description;
+            public String get_photo;
+            public String get_photo_thumbnail;
+            public String get_photo_micro_thumbnail;
 
+        }
     }
+
 
     public ArrayList<articlereferences_set> articlereferences_set = new ArrayList<articlereferences_set>();
     public class articlereferences_set{

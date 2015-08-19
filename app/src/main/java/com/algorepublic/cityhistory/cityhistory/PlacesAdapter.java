@@ -51,7 +51,7 @@ public class PlacesAdapter extends BaseAdapter {
             public void onClick(View view) {
                 int cityId = PlacesModel.getInstance().results.get(position).id;
                 ((FragmentActivity) ctx) .getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, PlacesDetailFragment.newInstance(cityId))
+                .add(R.id.container, PlacesDetailFragment.newInstance(cityId))
                 .addToBackStack(null).commit();
 
 

@@ -1,5 +1,7 @@
 package Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -30,7 +32,8 @@ public class PlacesDetailModel {
     public String get_photo;
     public String get_photo_thumbnail;
     public String get_photo_micro_thumbnail;
-    public String main_photo;
+//    @SerializedName("main_photo")
+//    public String main_photo;
     public String added;
     public String slug;
     public String address;
@@ -38,6 +41,12 @@ public class PlacesDetailModel {
     public Type type = new Type();
     public user user = new user();
     public site site = new site();
+//    @SerializedName("main_photo")
+//    public MainPhoto main_photos = new MainPhoto();
+
+    public class MainPhoto {
+        public int id;
+    }
     public class Album {
         public int id;
         public String title;

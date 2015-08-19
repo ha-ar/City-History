@@ -9,10 +9,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.androidquery.AQuery;
 import com.google.android.gms.ads.AdRequest;
@@ -43,6 +47,8 @@ public class BaseActivity extends FragmentActivity {
     private Spinner spinner1;
     public ArrayList<String> name;
     public ArrayAdapter<String> dataAdapter;
+    static RelativeLayout toolbar;
+    public ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +67,12 @@ public class BaseActivity extends FragmentActivity {
         base = ((BaseClass)getApplicationContext());
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         name = new ArrayList<>();
+        toolbar = (RelativeLayout) findViewById(R.id.toolbar_actionbar);
+        imageView = (ImageView) findViewById(R.id.home_image);
         obj = new SelectCityService(BaseActivity.this);
         obj.SelectCity(true, new CallBack(this, "UpDateList"));
         CityListView = (ListView) findViewById(R.id.city_list);
-
+      ;
         button = (Switch) findViewById(R.id.switch1);
         button.setChecked(true);
         button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -97,6 +105,12 @@ public class BaseActivity extends FragmentActivity {
                 }
 
 
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLeft.openMenu();
             }
         });
 

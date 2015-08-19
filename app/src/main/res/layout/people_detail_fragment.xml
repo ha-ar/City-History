@@ -16,8 +16,9 @@
         android:scrollbars="none"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:background="@android:color/white"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
            <LinearLayout
@@ -45,7 +46,6 @@
             <org.lucasr.twowayview.widget.TwoWayView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/people_list"
-                android:layout_below="@+id/people_pager"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 style="@style/TwoWayView"
@@ -60,15 +60,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 ads:adSize="SMART_BANNER"
-                android:layout_below="@id/lay"
-
                 ads:adUnitId="ca-app-pub-6939500014189035/5918151304">
             </com.google.android.gms.ads.AdView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_below="@+id/adView"
                 android:id="@+id/layout_disc"
                 android:layout_marginTop="5dp"
                 android:weightSum="4">
@@ -96,7 +93,6 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_below="@id/layout_disc"
                 android:layout_height="match_parent"
                 android:padding="0.1dp"
                 android:layout_marginTop="15dp"
@@ -104,13 +100,30 @@
                 android:id="@+id/view2"
                 android:layout_marginRight="26dp"
                 android:background="@drawable/line_history"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/location_people_photosset"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp">
+                <com.astuetz.PagerSlidingTabStrip
+                    android:id="@+id/people_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dip"
+                    />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/people_pagerForList"
+                    android:layout_below="@+id/people_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
 
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:id="@+id/people_layout_map"
                 android:orientation="vertical"
-                android:layout_below="@+id/view2">
+                >
                 <fragment
                     android:id="@+id/people_mapView"
                     android:layout_width="match_parent"
@@ -126,7 +139,7 @@
                 android:id="@+id/layout_type"
                 android:weightSum="2"
                 android:layout_marginTop="15dp"
-                android:layout_below="@+id/people_layout_map">
+                >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -143,7 +156,6 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_below="@id/layout_type"
                 android:layout_height="match_parent"
                 android:padding="0.1dp"
                 android:layout_marginTop="5dp"
@@ -158,7 +170,7 @@
                 android:id="@+id/layout_added"
                 android:weightSum="2"
                 android:layout_marginTop="15dp"
-                android:layout_below="@+id/layout_type">
+                >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -175,7 +187,6 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_below="@id/layout_added"
                 android:layout_height="match_parent"
                 android:padding="0.1dp"
                 android:layout_marginTop="5dp"
@@ -190,7 +201,7 @@
                 android:id="@+id/layout_added_by"
                 android:weightSum="2"
                 android:layout_marginTop="15dp"
-                android:layout_below="@+id/layout_added">
+                >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -207,7 +218,6 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_below="@id/layout_added_by"
                 android:layout_height="match_parent"
                 android:padding="0.1dp"
                 android:id="@+id/view"
@@ -216,7 +226,7 @@
                 android:layout_marginRight="22dp"
                 android:background="@drawable/line_history"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

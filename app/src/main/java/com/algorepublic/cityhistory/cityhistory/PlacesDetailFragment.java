@@ -1,5 +1,6 @@
 package com.algorepublic.cityhistory.cityhistory;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -64,8 +65,10 @@ public class PlacesDetailFragment extends BaseFragment {
     AdView adView;
     ArrayList<String> stringArrayList;
     private int height = 5 ;
-    ViewPager peoplePager;
+    ViewPager placesPager;
     private PagerSlidingTabStrip tabs;
+    public ArrayList<String> years;
+    ProgressDialog progressDialog;
 
     public static PlacesDetailFragment newInstance(int id) {
         Log.e("CitrdeatilsInplaces ", String.valueOf(id));
@@ -92,8 +95,8 @@ public class PlacesDetailFragment extends BaseFragment {
         adView.loadAd(new AdRequest.Builder().build());
         pager = (ViewPager) view.findViewById(R.id.pager);
         tabs = (PagerSlidingTabStrip) view.findViewById(R.id.people_tabs);
-        peoplePager = (ViewPager) view.findViewById(R.id.people_pagerForList);
-
+        placesPager = (ViewPager) view.findViewById(R.id.places_pagerForList);
+        years = new ArrayList<>();
 
         adView = (AdView) view.findViewById(R.id.adView);
         title = (TextView) view.findViewById(R.id.head_places);
@@ -113,22 +116,29 @@ public class PlacesDetailFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-
+        showPager();
+        showPagerSecond();
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        BaseActivity.toolbar.setVisibility(View.GONE);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        progressDialog.show();
         final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
         createMapView();
+        showPager();
+        showPagerSecond();
         obj = new PlacesDetailService(getActivity().getApplicationContext());
         obj.CityPlacesDetails( true,PlaceId, new CallBack(this, "CityPlacesDetails"));
         itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View child, int position, long id) {
                 pager.setCurrentItem(position);
-                aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
+                aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().description));
             }
         });
 
@@ -153,35 +163,97 @@ public class PlacesDetailFragment extends BaseFragment {
 
     }
 
+    public void showPager(){
+
+        aq.id(R.id.places_imgLogo).visibility(View.GONE);
+        aq.id(R.id.pager).visibility(View.VISIBLE);
+        aq.id(R.id.list).visibility(View.VISIBLE);
+
+    }
+
+    public void showImage(){
+        aq.id(R.id.places_imgLogo).visibility(View.VISIBLE);
+        aq.id(R.id.pager).visibility(View.GONE);
+        aq.id(R.id.list).visibility(View.GONE);
+
+    }
+
+    public void hidePagerSecond(){
+        aq.id(R.id.location_places_photosset).visibility(View.GONE);
+    }
+    public void showPagerSecond(){
+        aq.id(R.id.location_places_photosset).visibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        showPager();
+        showPagerSecond();
+        BaseActivity.toolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        showPager();
+        showPagerSecond();
+        BaseActivity.toolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showPager();
+        showPagerSecond();
+    }
 
     public void CityPlacesDetails(Object caller, Object model) {
-        PlacesDetailModel.getInstance().album.photos_set.clear();
         PlacesDetailModel.getInstance().setList((PlacesDetailModel) model);
+//        progressDialog.dismiss();
+        if (PlacesDetailModel.getInstance().album == null || PlacesDetailModel.getInstance().album.photos_set.size()==0 ){
+
+            showImage();
+            aq.id(R.id.places_imgLogo).image(PlacesDetailModel.getInstance().get_photo);
+            aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().description));
+        }else {
+            showPager();
+        }
+        if (PlacesDetailModel.getInstance().articledetails_set.size() == 0 || PlacesDetailModel.getInstance().articledetails_set == null){
+            Log.e("subyear","subyear");
+            hidePagerSecond();
+        }
+        else {
+            showPagerSecond();
+        }
         mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
         mRecyclerView.setAdapter(new LayoutAdapter(getActivity(), mRecyclerView));
         mCustomPagerAdapter.notifyDataSetChanged();
         upDateData();
         stringArrayList = new ArrayList<String>();
+
         for(int loop=0;loop< PlacesDetailModel.getInstance().articledetails_set.size();loop++)
         {
-            Log.e("subyear","subyear");
+
             subyear=PlacesDetailModel.getInstance().articledetails_set.get(loop).original_date;
+            years.add(PlacesDetailModel.getInstance().articledetails_set.get(loop).original_date);
             Log.e("subyear",subyear);
             String [] splited = subyear.split("-");
             String year = splited[0];
             if(!stringArrayList.contains(year))
             stringArrayList.add(year);
         }
-
-        PageAdapter pagerAdapter = new PageAdapter(getChildFragmentManager());
-        peoplePager.setAdapter(pagerAdapter);
+        Log.e("1","2");
+        PageAdapter pagerAdapter = new PageAdapter(getActivity().getSupportFragmentManager());
+        placesPager.setAdapter(pagerAdapter);
 
         tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
         tabs.setTextColor(getResources().getColor(R.color.Black));
         tabs.setIndicatorHeight(height);
         tabs.setDividerColor(getResources().getColor(R.color.Black));
-        tabs.setViewPager(peoplePager);
+        tabs.setViewPager(placesPager);
 
 
     }
@@ -223,6 +295,7 @@ public class PlacesDetailFragment extends BaseFragment {
         }
 
     }
+
     class CustomPagerAdapter extends PagerAdapter {
 
         Context mContext;
@@ -261,7 +334,7 @@ public class PlacesDetailFragment extends BaseFragment {
             ProgressBar progressBar = (ProgressBar) itemView.findViewById(R.id.progress);
             imageView = (ImageView) itemView.findViewById(R.id.imageView_people);
             aq.id(imageView).progress(progressBar).image(PlacesDetailModel.getInstance().album.photos_set.get(Position).get_photo, true, true);
-            aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().album.photos_set.get(Position).description));
+            aq.id(R.id.disc_places).text(Html.fromHtml(PlacesDetailModel.getInstance().description));
             container.addView(itemView);
             return itemView;
         }
@@ -273,34 +346,46 @@ public class PlacesDetailFragment extends BaseFragment {
     }
     public class PageAdapter extends FragmentStatePagerAdapter {
 
-        private String[] TITLES;
+        private String[] TITLES = {"All", "New", "Used", "Rental", "eBook"};
+        private String[] array ;
 
         public PageAdapter(FragmentManager fm) {
             super(fm);
-            TITLES = stringArrayList.toArray(new String[stringArrayList.size()]);
+            Log.e("1", stringArrayList.toArray(new String[stringArrayList.size()]).toString());
+           // TITLES = stringArrayList.toArray(new String[stringArrayList.size()]);
+            array = stringArrayList.toArray(new String[stringArrayList.size()]);
+            for (int loop =0;loop<array.length;loop++){
+                Log.e("Array Value",array[loop] +" "+ years.get(loop));
+            }
+
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return TITLES[position];
+
+            return array[position];
         }
 
         @Override
         public int getCount() {
-            return TITLES.length;
+            return array.length;
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position)
-            {
-                case 0:
-               return   Twentyfifteen.newInstance(PlaceId);
+
+            Log.e("Year Date", years.get(position));
+            if(position == 0)
+                return PhotoFragmnet.getInstance(years.get(position), PlaceId,position);
+            else {
+                Log.e("Else", "Ok");
+                return PhotoFragmnet2.getInstance(years.get(position), PlaceId);
             }
-            return null;
         }
 
     }
+
+
     private class GalleryPagerAdapter {
         public GalleryPagerAdapter(FragmentActivity activity) {
         }
@@ -347,8 +432,9 @@ public class PlacesDetailFragment extends BaseFragment {
         @Override
         public int getItemCount() {
 
-            Log.e("Size", PlacesDetailModel.getInstance().album.photos_set.size() + "");
+
             try {
+                Log.e("Size", PlacesDetailModel.getInstance().album.photos_set.size() + "");
                 return PlacesDetailModel.getInstance().album.photos_set.size();
             } catch (NullPointerException e) {
                 aq.id(R.id.list).visibility(View.GONE);

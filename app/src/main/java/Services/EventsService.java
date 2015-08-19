@@ -1,6 +1,7 @@
 package Services;
 
 import android.content.Context;
+import android.util.Log;
 
 import Model.EventsModel;
 
@@ -16,6 +17,7 @@ public class EventsService extends BaseService {
 
     public void EventsDetails(String CityId,String CategoriedId,boolean message, CallBack obj){
         String url = Constants.BASE_URL + "site/" + CityId + "/type/"+CategoriedId+"/articles-list/?format=json";
+        Log.e("Events Url",url);
         this.get(url, obj, EventsModel.getInstance(), message);
     }
     public void EventDetailPage(String CityId, String CategoriedId,boolean message,int pageNo,CallBack obj){

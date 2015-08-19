@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,15 +101,19 @@ public class PagerFragment extends Fragment {
             {
                 case 0:
                     CategoriesId="1";
+                    Log.e("1","first");
                     return PlacesFragment.newInstance(cityId,CategoriesId);
                 case 1:
                     CategoriesId="2";
+                    Log.e("2","second");
                     return EventsFragment.newInstance(cityId,CategoriesId);
                 case 2:
                     CategoriesId="3";
+                    Log.e("3","third");
                     return PeopleFragment.newInstance(cityId,CategoriesId);
                 case 3:
                     CategoriesId="4";
+                    Log.e("4","forth");
                     return BlogsFragment.newInstance(cityId,CategoriesId);
             }
             return null;

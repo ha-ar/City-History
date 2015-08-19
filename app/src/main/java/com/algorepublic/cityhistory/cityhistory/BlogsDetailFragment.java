@@ -3,6 +3,9 @@ package com.algorepublic.cityhistory.cityhistory;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.util.Constants;
+import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +41,7 @@ import org.lucasr.twowayview.widget.TwoWayView;
 import java.util.ArrayList;
 
 import Model.BlogsDetailsModel;
+import Model.PlacesDetailModel;
 import Services.BlogsDetailService;
 import Services.CallBack;
 
@@ -61,6 +67,12 @@ public class BlogsDetailFragment extends BaseFragment {
     ArrayList<ItemDetails> details;
     int Position=0;
     ImageView image;
+    ArrayList<String> stringArrayList;
+    static String subyear;
+    public ArrayList<String> years;
+    private int height = 5 ;
+    ViewPager blogsPager;
+    private PagerSlidingTabStrip tabs;
 
 
     public static BlogsDetailFragment newInstance(int id) {
@@ -83,6 +95,8 @@ public class BlogsDetailFragment extends BaseFragment {
         adView = (AdView) view.findViewById(R.id.adView);
         adView.loadAd(new AdRequest.Builder().build());
         pager = (ViewPager) view.findViewById(R.id.blog_pager);
+        blogsPager = (ViewPager) view.findViewById(R.id.blogs_pagerForList);
+        tabs = (PagerSlidingTabStrip) view.findViewById(R.id.blogs_tabs);
         image = (ImageView) view.findViewById(R.id.blog_imgLogo);
         title = (TextView) view.findViewById(R.id.blog_head);
         mRecyclerView = (TwoWayView) view.findViewById(R.id.blog_list);
@@ -96,13 +110,11 @@ public class BlogsDetailFragment extends BaseFragment {
         home_detail = (TextView) view.findViewById(R.id.title_header);
         added_by = (TextView) view.findViewById(R.id.blog_added_by);
         aq.id(R.id.blog_mapView).visibility(View.GONE);
-
-
-
-
         pager = (ViewPager) view.findViewById(R.id.blog_pager);
         mCustomPagerAdapter = new ImageBlogAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
+        showPager();
+        showPagerSecond();
         obj = new BlogsDetailService(getActivity().getApplicationContext());
         obj.BlogsDetails(PlaceId, true, new CallBack(this, "BlogsDetails"));
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -119,11 +131,13 @@ public class BlogsDetailFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         final ItemClickSupport itemClick = ItemClickSupport.addTo(mRecyclerView);
         createMapView();
+        showPager();
+        showPagerSecond();
         itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View child, int position, long id) {
                 pager.setCurrentItem(position);
-                aq.id(R.id.people_disc).text(Html.fromHtml(BlogsDetailsModel.getInstance().album.photos_set.get(position).description));
+                aq.id(R.id.people_disc).text(Html.fromHtml(BlogsDetailsModel.getInstance().description));
             }
         });
     }
@@ -144,27 +158,122 @@ public class BlogsDetailFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-
-        super.onResume();
+    public void onDetach() {
+        super.onDetach();
+        showPager();
+        showPagerSecond();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        showPager();
+        showPagerSecond();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showPager();
+        showPagerSecond();
+    }
+    public void hidePagerSecond(){
+        aq.id(R.id.location_blogs_photosset).visibility(View.GONE);
+    }
+    public void showPagerSecond(){
+        aq.id(R.id.location_blogs_photosset).visibility(View.VISIBLE);
+
+    }
+
     public void BlogsDetails(Object caller, Object model) {
 
         BlogsDetailsModel.getInstance().setList((BlogsDetailsModel) model);
 
-        if (BlogsDetailsModel.getInstance().album==null){
+        if (BlogsDetailsModel.getInstance().album == null || BlogsDetailsModel.getInstance().album.photos_set.size()==0){
             showImage();
             aq.id(R.id.blog_imgLogo).image(BlogsDetailsModel.getInstance().get_photo);
             aq.id(R.id.blog_disc).text(Html.fromHtml(BlogsDetailsModel.getInstance().description));
         }else{
             showPager();
         }
-
+        if (BlogsDetailsModel.getInstance().articledetails_set.size() == 0 || BlogsDetailsModel.getInstance().articledetails_set == null
+                || BlogsDetailsModel.getInstance().articledetails_set.get(0).album.photos_set.size()==0){
+            Log.e("subyear", "subyear");
+            hidePagerSecond();
+        }
+        else {
+            showPagerSecond();
+        }
 
         mCustomPagerAdapter = new ImageBlogAdapter(getActivity());
         pager.setAdapter(mCustomPagerAdapter);
         mRecyclerView.setAdapter(new LayoutAdapter(getActivity(), mRecyclerView));
         upDateData();
+
+        stringArrayList = new ArrayList<String>();
+
+        for(int loop=0;loop< BlogsDetailsModel.getInstance().articledetails_set.size();loop++)
+        {
+
+            subyear=BlogsDetailsModel.getInstance().articledetails_set.get(loop).original_date;
+            years.add(BlogsDetailsModel.getInstance().articledetails_set.get(loop).original_date);
+            Log.e("subyear",subyear);
+            String [] splited = subyear.split("-");
+            String year = splited[0];
+            if(!stringArrayList.contains(year))
+                stringArrayList.add(year);
+        }
+        Log.e("1","2");
+        PageAdapter pagerAdapter = new PageAdapter(getActivity().getSupportFragmentManager());
+        blogsPager.setAdapter(pagerAdapter);
+
+        tabs.setIndicatorColor(getResources().getColor(R.color.Orange));
+        tabs.setTextColor(getResources().getColor(R.color.Black));
+        tabs.setIndicatorHeight(height);
+        tabs.setDividerColor(getResources().getColor(R.color.Black));
+        tabs.setViewPager(blogsPager);
+
+
+    }
+
+    public class PageAdapter extends FragmentStatePagerAdapter {
+
+        private String[] TITLES = {"All", "New", "Used", "Rental", "eBook"};
+        private String[] array ;
+
+        public PageAdapter(FragmentManager fm) {
+            super(fm);
+            Log.e("1", stringArrayList.toArray(new String[stringArrayList.size()]).toString());
+            // TITLES = stringArrayList.toArray(new String[stringArrayList.size()]);
+            array = stringArrayList.toArray(new String[stringArrayList.size()]);
+            for (int loop =0;loop<array.length;loop++){
+                Log.e("Array Value",array[loop] +" "+ years.get(loop));
+            }
+
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            return array[position];
+        }
+
+        @Override
+        public int getCount() {
+            return array.length;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+            Log.e("Year Date", years.get(position));
+            if(position == 0)
+                return PhotoFragmnet.getInstance(years.get(position), PlaceId,position);
+            else {
+                Log.e("Else", "Ok");
+                return PhotoFragmnet2.getInstance(years.get(position), PlaceId);
+            }
+        }
 
     }
 
@@ -257,7 +366,7 @@ public class BlogsDetailFragment extends BaseFragment {
         }
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == ((LinearLayout) object);
+            return view == ((RelativeLayout) object);
         }
         @Override
         public Object instantiateItem(ViewGroup container, int position) {

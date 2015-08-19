@@ -48,7 +48,7 @@ public class BlogsAdapter extends BaseAdapter {
                 int cityId = BlogsModel.getInstance().results.get(position).id;
                 Log.e("CitydeatilsId", String.valueOf(BlogsModel.getInstance().results.get(position).id));
                 ((FragmentActivity) ctx) .getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, BlogsDetailFragment.newInstance(cityId))
+                        .add(R.id.container, BlogsDetailFragment.newInstance(cityId))
                         .addToBackStack(null).commit();
             }
         });
