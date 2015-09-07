@@ -15,7 +15,7 @@
 
 
 <ScrollView
-
+    android:id="@+id/parents_scrollview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:scrollbars="none"

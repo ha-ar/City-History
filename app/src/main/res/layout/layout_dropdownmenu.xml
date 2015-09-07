@@ -69,8 +69,10 @@
             android:layout_width="match_parent"
             android:id="@+id/layout_internal"
             android:weightSum="2"
-            android:padding="5dp"
-            android:layout_height="50dp">
+            android:padding="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/spinner_background"
+            >
 
             <!--<TextView-->
                 <!--android:layout_width="0dp"-->
@@ -86,9 +88,8 @@
                 android:id="@+id/spinner1"
                 android:layout_weight="2"
                 android:layout_width="0dp"
+                android:padding="2dp"
                 android:layout_height="50dp"
-                android:background="@android:color/darker_gray"
-
                  />
         </LinearLayout>
         <TextView
@@ -186,7 +187,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-
         android:layout_height="50dp">
 
         <TextView
@@ -194,12 +194,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Logout"
-
             android:textColor="@android:color/white"
             android:id="@+id/logout_text"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 

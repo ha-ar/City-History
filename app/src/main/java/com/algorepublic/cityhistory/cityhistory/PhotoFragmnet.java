@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ScrollView;
 
 import com.androidquery.AQuery;
 
@@ -36,6 +38,7 @@ public class PhotoFragmnet extends Fragment {
     ProgressDialog progressDialog;
     PhotoDetails itemDetails;
     static int position;
+    ScrollView scrollView;
 
     public static PhotoFragmnet getInstance(String Date, int PlaceId, int Position){
         PhotoFragmnet _obj = new PhotoFragmnet();
@@ -59,6 +62,7 @@ public class PhotoFragmnet extends Fragment {
         aq = new AQuery(getActivity());
         arrayList = new ArrayList<>();
         itemDetails = new PhotoDetails();
+        scrollView = (ScrollView) view.findViewById(R.id.parents_scrollview);
         photoGridView = (GridView) view.findViewById(R.id.city_details);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
@@ -73,6 +77,15 @@ public class PhotoFragmnet extends Fragment {
 //                GetSearchMoreResults(index);
 //            }
 //        });
+
+        photoGridView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
 
         return view;
     }
@@ -110,6 +123,7 @@ public class PhotoFragmnet extends Fragment {
         Log.e("result length:", results.size()+"");
         photoAdapter = new PhotoAdapter(getActivity(),results);
         photoGridView.setNumColumns(5);
+//        photoGridView.setExpanded(true);
         photoGridView.setAdapter(photoAdapter);
     }
 
